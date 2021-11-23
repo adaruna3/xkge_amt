@@ -1,0 +1,87 @@
+[
+    {
+        "triple": "a closetdrawer is often in a bedroom", 
+        "y_bb": "1", 
+        "y_xm": "1", 
+        "str": "a closetdrawer operates on a clothespants, and a clothespants is often in a bedroom", 
+        "parts": [
+            {
+                "idx": "0", 
+                "str": "a closetdrawer,operates on,a clothespants",
+                "corrections": []
+            }, {
+                "idx": "1", 
+                "str": "a clothespants,is often in,a bedroom",
+                "corrections": []
+            }
+        ]
+    }, {
+        "triple": "a cutleryfork can have performed on it the rinse action", 
+        "y_bb": "1", 
+        "y_xm": "1", 
+        "str": "a cutleryfork has a possible state of the clean state, and the clean state is caused by the rinse action", 
+        "parts": [
+            {
+                "idx": "0", 
+                "str": "a cutleryfork,has a possible state of,the clean state",
+                "corrections": []
+            }, {
+                "idx": "1", 
+                "str": "the clean state,is caused by,the rinse action",
+                "corrections": []
+            }
+        ]
+    }, {
+        "triple": "a coatrack has a possible state of the cooked state", 
+        "y_bb": "1", 
+        "y_xm": "1", 
+        "str": "a coatrack has a possible state of the full state, and the full state is the opposite state of the cooked state", 
+        "parts": [
+            {
+                "idx": "0", 
+                "str": "a coatrack,has a possible state of,the full state",
+                "corrections": []
+            }, {
+                "idx": "1", 
+                "str": "the full state,is the opposite state of,the cooked state",
+                "corrections": [
+                    "the full state,is the opposite state of,the on state", 
+                    "the full state,is the opposite state of,the empty state", 
+                    "the full state,is the opposite state of,the clean state"
+                ]
+            }
+        ]
+    }, {
+        "triple": "a waterglass is used to perform the vacuum action", 
+        "y_bb": "1", 
+        "y_xm": "1", 
+        "str": "a waterglass can have performed on it the wash action, the wash action can be done with a plate, a plate operates on a bellpepper, and a bellpepper is used to perform the vacuum action", 
+        "parts": [
+            {
+                "idx": "0", 
+                "str": "a waterglass,can have  performed on it,the wash action",
+                "corrections": []
+            }, {
+                "idx": "1", 
+                "str": "the wash action,can be done with,a plate",
+                "corrections": [
+                    "the wash action,can be done with,a dishwasher", 
+                    "the wash action,can be done with,a rubbishbin", 
+                    "the wash action,can be done with,a garbagecan"
+                ]
+            }, {
+                "idx": "2", 
+                "str": "a plate,operates on,a bellpepper",
+                "corrections": []
+            }, {
+                "idx": "3", 
+                "str": "a bellpepper,is used to perform,the vacuum action", 
+                "corrections": [
+                    "a microwave,is used to perform,the vacuum action", 
+                    "a rubbishbin,is used to perform,the vacuum action",
+                    "a vacuum,is used to perform,the vacuum action"
+                ]
+            }
+        ]
+    }
+]
