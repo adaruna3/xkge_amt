@@ -1,9 +1,17 @@
 import React, { useState } from 'react';
 
-function Welcome({setCurrentPage, saveTurkId}) {
+function Welcome({setCurrentPage, saveTurkId, setExpId}) {
     const [TURKID, setTURKID] = useState(false)
 
-    const [id, setId] = useState('')
+    const [turkId, setTurkId] = useState(false)
+    const [testId, setTestId] = useState(false)
+
+    var next_button;
+    if (!(turkId && testId)) {
+        next_button = "Disabled. Complete your selection.";
+    } else {
+        next_button = "Continue";
+    }
 
     return (
         <div className="container-rules">
@@ -18,16 +26,14 @@ function Welcome({setCurrentPage, saveTurkId}) {
                     <br/><br/>
                     <b>Your task is to identify why Maeve makes incorrect predictions and fix incorrect parts of Maeve's justifications to improve its knowledge.</b>
                     <br/><br/>
-                    This HIT consists of 3 stages.  In this first stage, we will show examples of Maeve making correct and incorrect 
-                    predictions, along with the corresponding justification. In the second stage, we will ask you to idenify what 
-                    parts of Maeve's justifications are wrong and how to correct them. In the final stage, you will answer an exit 
-                    questionnaire.
-                    <br/><br/>
-
-                    Please <i>carefully</i> read Maeve's justifications so you can identify incorrect parts and imporve its knowledge!
-
+                    This HIT consists of 3 stages. Instructions will be provided in each stage.
                     </p>
-                    <br/><hr/>  
+                    <ul>
+                        <li>Practice Stage</li>
+                        <li>Test Stage</li>
+                        <li>Exit Questionnaire</li>
+                    </ul>
+                    <hr/>  
                     <button 
                         type="button" 
                         className="btn btn-outline-primary d-block mx-auto" 
@@ -43,7 +49,13 @@ function Welcome({setCurrentPage, saveTurkId}) {
                 <div className="row text-center">
                     <div className="col-12">
                     <label>TURK ID</label>
-                    <input type="text" className="form-control mx-auto" id="inputTurkID" onChange={(e) => setId(e.target.value)} style={{width:"50%"}}/>
+                    <input type="text" className="form-control mx-auto" id="inputTurkID" onChange={(e) => setTurkId(e.target.value)} style={{width:"50%"}}/><br/>
+                    </div>
+                </div>
+                <div className="row text-center">
+                    <div className="col-12">
+                    <label>TEST ID</label>
+                    <input type="text" className="form-control mx-auto" id="inputTestID" onChange={(e) => setTestId(e.target.value)} style={{width:"25%"}}/>
                     </div>
                 </div>
                 <div className="row text-center mt-3">
@@ -52,12 +64,13 @@ function Welcome({setCurrentPage, saveTurkId}) {
                             type="button" 
                             className="btn btn-outline-primary"
                             onClick={()=> {
-                                setCurrentPage('Rules')
-                                saveTurkId(id)
+                                saveTurkId(turkId);
+                                setExpId(testId);
+                                setCurrentPage('Rules');
                             }} 
-                            disabled={!id}
+                            disabled={!(turkId && testId)}
                         >
-                            Continue
+                        {next_button}
                         </button>
                     </div>
                 </div>

@@ -3,47 +3,70 @@
         "triple": "a closetdrawer is often in a bedroom", 
         "y_bb": "1", 
         "y_xm": "1", 
-        "str": "a closetdrawer operates on a clothespants, and a clothespants is often in a bedroom", 
         "parts": [
             {
                 "idx": "0", 
                 "str": "a closetdrawer,operates on,a clothespants",
-                "corrections": []
+                "correct_id": -1,
+                "corrections": [
+                    "a closetdrawer,operates on,a broom",
+                    "a closetdrawer,operates on,a toilet",
+                    "a closetdrawer,operates on,a bed"
+                ]
             }, {
                 "idx": "1", 
                 "str": "a clothespants,is often in,a bedroom",
-                "corrections": []
+                "correct_id": -1,
+                "corrections": [
+                    "a clothespants,is often in,a blender",
+                    "a clothespants,is often in,a microwave",
+                    "a clothespants,is often in,a bathtub"
+                ]
             }
         ]
     }, {
         "triple": "a cutleryfork can have performed on it the rinse action", 
         "y_bb": "1", 
-        "y_xm": "1", 
-        "str": "a cutleryfork has a possible state of the clean state, and the clean state is caused by the rinse action", 
+        "y_xm": "1",
         "parts": [
             {
                 "idx": "0", 
                 "str": "a cutleryfork,has a possible state of,the clean state",
-                "corrections": []
+                "correct_id": -1,
+                "corrections": [
+                    "a cutleryfork,has a possible state of,the unplugged state",
+                    "a cutleryfork,has a possible state of,the open state",
+                    "a cutleryfork,has a possible state of,the closed state"
+                ]
             }, {
                 "idx": "1", 
                 "str": "the clean state,is caused by,the rinse action",
-                "corrections": []
+                "correct_id": -1,
+                "corrections": [
+                    "the open state,is caused by,the rinse action",
+                    "the closed state,is caused by,the rinse action",
+                    "the plugged in state,is caused by,the rinse action"
+                ]
             }
         ]
     }, {
         "triple": "a coatrack has a possible state of the cooked state", 
         "y_bb": "1", 
-        "y_xm": "1", 
-        "str": "a coatrack has a possible state of the full state, and the full state is the opposite state of the cooked state", 
+        "y_xm": "1",
         "parts": [
             {
                 "idx": "0", 
                 "str": "a coatrack,has a possible state of,the full state",
-                "corrections": []
+                "correct_id": -1,
+                "corrections": [
+                    "a laptop,has a possible state of,the full state",
+                    "a book,has a possible state of,the full state",
+                    "a knife,has a possible state of,the full state"
+                ]
             }, {
                 "idx": "1", 
                 "str": "the full state,is the opposite state of,the cooked state",
+                "correct_id": 1,
                 "corrections": [
                     "the full state,is the opposite state of,the on state", 
                     "the full state,is the opposite state of,the empty state", 
@@ -54,32 +77,102 @@
     }, {
         "triple": "a waterglass is used to perform the vacuum action", 
         "y_bb": "1", 
-        "y_xm": "1", 
-        "str": "a waterglass can have performed on it the wash action, the wash action can be done with a plate, a plate operates on a bellpepper, and a bellpepper is used to perform the vacuum action", 
+        "y_xm": "1",
         "parts": [
             {
                 "idx": "0", 
-                "str": "a waterglass,can have  performed on it,the wash action",
-                "corrections": []
+                "str": "a waterglass,can have performed on it,the wash action",
+                "correct_id": -1,
+                "corrections": [
+                    "a waterglass,can have performed on it,the turn on action",
+                    "a waterglass,can have performed on it,the turn off action",
+                    "a waterglass,can have performed on it,the plugin action"
+                ]
             }, {
                 "idx": "1", 
                 "str": "the wash action,can be done with,a plate",
+                "correct_id": 2,
                 "corrections": [
-                    "the wash action,can be done with,a dishwasher", 
                     "the wash action,can be done with,a rubbishbin", 
-                    "the wash action,can be done with,a garbagecan"
+                    "the wash action,can be done with,a garbagecan",
+                    "the wash action,can be done with,a dishwasher"
                 ]
             }, {
                 "idx": "2", 
-                "str": "a plate,operates on,a bellpepper",
-                "corrections": []
+                "str": "a plate,operates on,a pan",
+                "correct_id": 0,
+                "corrections": [
+                    "a dishwasher,operates on,a pan",
+                    "a floor,operates on,a pan",
+                    "a bed,operates on,a pan"
+                ]
             }, {
                 "idx": "3", 
-                "str": "a bellpepper,is used to perform,the vacuum action", 
+                "str": "a pan,is used to perform,the vacuum action", 
+                "correct_id": 1,
                 "corrections": [
-                    "a microwave,is used to perform,the vacuum action", 
-                    "a rubbishbin,is used to perform,the vacuum action",
-                    "a vacuum,is used to perform,the vacuum action"
+                    "a pan,is used to perform,the wipe action",
+                    "a pan,is used to perform,the pour action", 
+                    "a pan,is used to perform,the fry action"
+                ]
+            }
+        ]
+    }, {
+        "y_bb": "1", 
+        "y_xm": "1", 
+        "triple": "a bathroomcounter is often in a bedroom",
+        "parts": [
+            {
+                "idx": "0", 
+                "str": "a bathroomcounter,often can contain,a toothbrush", 
+                "correct_id": -1,
+                "corrections": [
+                    "a bathroomcounter,often can contain,a cupcake", 
+                    "a bathroomcounter,often can contain,a pudding", 
+                    "a bathroomcounter,often can contain,a folder"
+                ]
+            }, {
+                "idx": "1", 
+                "str": "a toothbrush,is often in,a bedroom", 
+                "correct_id": 0,
+                "corrections": [
+                    "a toothbrush,is often in,a bathroom", 
+                    "a toothbrush,is often in,a fridge", 
+                    "a toothbrush,is often in,a microwave"
+                ]
+            }
+        ]
+    }, {
+        "y_bb": "1", 
+        "y_xm": "1",
+        "triple": "a duster is used to perform the plugin action",
+        "parts": [
+            {
+                "idx": "0", 
+                "str": "a duster,is used to perform,the bake action", 
+                "correct_id": 1,
+                "corrections": [
+                    "a duster,is used to perform,the fry action", 
+                    "a duster,is used to perform,the dust action", 
+                    "a duster,is used to perform,the discard action"
+                ]
+            }, {
+                "idx": "1", 
+                "str": "the bake action,results in,the clean state", 
+                "correct_id": 2,
+                "corrections": [
+                    "the plugin action,results in,the clean state", 
+                    "the microwave action,results in,the clean state", 
+                    "the dust action,results in,the clean state"
+                ]
+            }, {
+                "idx": "2", 
+                "str": "the clean state,is caused by,the plugin action",
+                "correct_id": 2,
+                "corrections": [
+                    "the clean state,is caused by,the unplug action", 
+                    "the clean state,is caused by,the close action", 
+                    "the clean state,is caused by,the wipe action"
                 ]
             }
         ]
