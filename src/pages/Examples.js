@@ -8,7 +8,7 @@ function Examples({setCurrentPage, saveData}) {
     const [currentExample, setCurrentExample] = useState(0)
     const [currentAnswered, setCurrentAnswered] = useState(false)
     const [testData, setTestData] = useState([])
-    const max_examples = 6
+    const max_examples = 1
 
     const [mpcState, setMpcState] = useState(
         new Array(examples[currentExample].parts.length).fill(false)

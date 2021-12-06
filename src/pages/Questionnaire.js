@@ -11,7 +11,7 @@ function Questionnaire({setCurrentPage, saveData}) {
             "age": q1,
             "gender": q2,
             "exposure": q3,
-            "classify_understanding": q4 
+            "feedback": q4 
         }
         saveData(data)
         setCurrentPage('Finish')
@@ -88,20 +88,9 @@ function Questionnaire({setCurrentPage, saveData}) {
                             </table>
                             <input type="range" className="custom-range" value={q3 || 1} min="1" max="4" id="customRange2" onChange={(e) => setQ3(e.target.value)}/>
                         </div>
-                        <p className="card-text"> <b>Question 4.</b> After today's interaction with the robot, how would you classify your understanding of robot abilities? </p>
+                        <p className="card-text"> <b>Question 4.</b> Please provide any feedback to improve the usability of this HIT below. </p>
                         <div className="mb-4">
-                            <table className="table table-borderless">
-                                <tbody>
-                                    <tr>
-                                        <td className="p-0 text-left" style={{width:'20%'}}><i>A lot worse</i></td>
-                                        <td className="py-0 pl-4 text-left" style={{width:'20%'}}><i>Somewhat worse</i></td>
-                                        <td className="p-0 text-center" style={{width:'20%'}}><i>No change</i></td>
-                                        <td className="py-0 pr-5 text-right" style={{width:'20%'}}><i>Somewhat better</i></td>
-                                        <td className="p-0 text-right" style={{width:'20%'}}><i>A lot better</i></td>
-                                    </tr>    
-                                </tbody>
-                            </table>
-                            <input type="range" className="custom-range" value={q4 || 0} min="1" max="5" id="customRange2" onChange={(e) => setQ4(e.target.value)}/>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={(e) => setQ4(e.target.value)}></textarea>
                         </div>
                         <button 
                             type="button" 
