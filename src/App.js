@@ -46,7 +46,7 @@ function App() {
 
   return (
     currentPage === 'Welcome' ? (
-      <Welcome setCurrentPage={(value) => setCurrentPage(value)} saveTurkId={(value) => setUserData({...userData, "turkId": value})} setExpId={(value) => setExpId(value-1)}/>
+      <Welcome setCurrentPage={(value) => setCurrentPage(value)} saveTurkId={(value) => setUserData({...userData, "turkId": value})} setExpId={(value) => setExpId(value-1)} maxExamples={maxTestExamples}/>
     ) : currentPage === 'Rules' ? (
       <Rules setCurrentPage={(value) => setCurrentPage(value)}/>
     ) : currentPage === 'Examples' ? (

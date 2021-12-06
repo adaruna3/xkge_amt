@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
+import examples from '../data/explanations_decision_tree_local3_best.json'
 
-function Welcome({setCurrentPage, saveTurkId, setExpId}) {
+function Welcome({setCurrentPage, saveTurkId, setExpId, maxExamples}) {
     const [TURKID, setTURKID] = useState(false)
 
     const [turkId, setTurkId] = useState(false)
     const [testId, setTestId] = useState(false)
+    
+    const maxTestId = parseInt(examples.length / maxExamples) + 1
 
     var next_button;
     if (!(turkId && testId)) {
@@ -48,13 +51,13 @@ function Welcome({setCurrentPage, saveTurkId, setExpId}) {
             <div className="form-group">
                 <div className="row text-center">
                     <div className="col-12">
-                    <label>TURK ID</label>
+                    <label>Enter TURK ID</label>
                     <input type="text" className="form-control mx-auto" id="inputTurkID" onChange={(e) => setTurkId(e.target.value)} style={{width:"50%"}}/><br/>
                     </div>
                 </div>
                 <div className="row text-center">
                     <div className="col-12">
-                    <label>TEST ID</label>
+                    <label>Enter TEST ID (number between 1 and {maxTestId})</label>
                     <input type="text" className="form-control mx-auto" id="inputTestID" onChange={(e) => setTestId(e.target.value)} style={{width:"25%"}}/>
                     </div>
                 </div>

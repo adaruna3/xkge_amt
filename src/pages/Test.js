@@ -8,6 +8,12 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
     const [currentExample, setCurrentExample] = useState(firstExample);
     const [testData, setTestData] = useState([]);
 
+    var max_examples = firstExample + maxExamples;
+    if (firstExample + maxExamples > examples.length){
+        max_examples = examples.length;
+    }
+        
+
     const [mpcState, setMpcState] = useState(
         new Array(examples[currentExample].parts.length).fill(false)
     );
@@ -42,7 +48,7 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
     var next_button;
     if (!validSubmit()) {
         next_button = "Disabled. Complete your selection."
-    } else if (currentExample+1 < firstExample+maxExamples) {
+    } else if (currentExample+1 < max_examples) {
         next_button = "Next Example"
     } else {
         next_button = "Next Stage"
@@ -91,7 +97,7 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
             <div className="container">
                 <div className="card mb-5" style={{backgroundColor:'#e6f7ff'}}>
                     <div className="card-body">
-                        <h5 className="card-title">Displaying Question {currentExample-firstExample+1} out of {maxExamples} </h5>
+                        <h5 className="card-title">Displaying Question {currentExample-firstExample+1} out of {max_examples-firstExample} </h5>
                         <div className="card-text">
                             Maeve predicted that:<br/>
                             <div className="form-check">
@@ -175,7 +181,7 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
                             disabled={!validSubmit()} 
                             className="btn btn-outline-primary d-block mx-auto"  
                             onClick={ () => {
-                                if (currentExample+1 < firstExample+maxExamples) {
+                                if (currentExample+1 < max_examples) {
                                     testData.push(mpcFixState);
                                     setTestData(testData);
                                     setMpcState(new Array(examples[currentExample+1].parts.length).fill(false));

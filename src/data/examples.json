@@ -1,42 +1,42 @@
 [
     {
-        "triple": "a closetdrawer is often in a bedroom", 
+        "triple": "a closet drawer can often be found in a bedroom", 
         "y_bb": "1", 
         "y_xm": "1", 
         "parts": [
             {
                 "idx": "0", 
-                "str": "a closetdrawer,operates on,a clothespants",
+                "str": "a closet drawer,can change the state of,a pants",
                 "correct_id": -1,
                 "corrections": [
-                    "a closetdrawer,operates on,a broom",
-                    "a closetdrawer,operates on,a toilet",
-                    "a closetdrawer,operates on,a bed"
+                    "a closet drawer,can change the state of,a broom",
+                    "a closet drawer,can change the state of,a toilet",
+                    "a closet drawer,can change the state of,a bed"
                 ]
             }, {
                 "idx": "1", 
-                "str": "a clothespants,is often in,a bedroom",
+                "str": "a pants,can often be found in,a bedroom",
                 "correct_id": -1,
                 "corrections": [
-                    "a clothespants,is often in,a blender",
-                    "a clothespants,is often in,a microwave",
-                    "a clothespants,is often in,a bathtub"
+                    "a pants,can often be found in,a blender",
+                    "a pants,can often be found in,a microwave",
+                    "a pants,can often be found in,a bathtub"
                 ]
             }
         ]
     }, {
-        "triple": "a cutleryfork can have performed on it the rinse action", 
+        "triple": "a fork can have performed on it the rinse action", 
         "y_bb": "1", 
         "y_xm": "1",
         "parts": [
             {
                 "idx": "0", 
-                "str": "a cutleryfork,has a possible state of,the clean state",
+                "str": "a fork,has a possible state of,the clean state",
                 "correct_id": -1,
                 "corrections": [
-                    "a cutleryfork,has a possible state of,the unplugged state",
-                    "a cutleryfork,has a possible state of,the open state",
-                    "a cutleryfork,has a possible state of,the closed state"
+                    "a fork,has a possible state of,the unplugged state",
+                    "a fork,has a possible state of,the open state",
+                    "a fork,has a possible state of,the closed state"
                 ]
             }, {
                 "idx": "1", 
@@ -75,7 +75,7 @@
             }
         ]
     }, {
-        "triple": "a waterglass is used to perform the vacuum action", 
+        "triple": "a waterglass can be used to perform the vacuum action", 
         "y_bb": "1", 
         "y_xm": "1",
         "parts": [
@@ -90,71 +90,71 @@
                 ]
             }, {
                 "idx": "1", 
-                "str": "the wash action,can be done with,a plate",
+                "str": "the wash action,can be done using,a plate",
                 "correct_id": 2,
                 "corrections": [
-                    "the wash action,can be done with,a rubbishbin", 
-                    "the wash action,can be done with,a garbagecan",
-                    "the wash action,can be done with,a dishwasher"
+                    "the wash action,can be done using,a rubbishbin", 
+                    "the wash action,can be done using,a garbagecan",
+                    "the wash action,can be done using,a dishwasher"
                 ]
             }, {
                 "idx": "2", 
-                "str": "a plate,operates on,a pan",
+                "str": "a plate,can change the state of,a pan",
                 "correct_id": 0,
                 "corrections": [
-                    "a dishwasher,operates on,a pan",
-                    "a floor,operates on,a pan",
-                    "a bed,operates on,a pan"
+                    "a dishwasher,can change the state of,a pan",
+                    "a floor,can change the state of,a pan",
+                    "a bed,can change the state of,a pan"
                 ]
             }, {
                 "idx": "3", 
-                "str": "a pan,is used to perform,the vacuum action", 
+                "str": "a pan,can be used to perform,the vacuum action", 
                 "correct_id": 1,
                 "corrections": [
-                    "a pan,is used to perform,the wipe action",
-                    "a pan,is used to perform,the pour action", 
-                    "a pan,is used to perform,the fry action"
+                    "a pan,can be used to perform,the wipe action",
+                    "a pan,can be used to perform,the pour action", 
+                    "a pan,can be used to perform,the fry action"
                 ]
             }
         ]
     }, {
         "y_bb": "1", 
         "y_xm": "1", 
-        "triple": "a bathroomcounter is often in a bedroom",
+        "triple": "a bathroom counter can often be found in a bedroom",
         "parts": [
             {
                 "idx": "0", 
-                "str": "a bathroomcounter,often can contain,a toothbrush", 
+                "str": "a bathroom counter,often can contain,a toothbrush", 
                 "correct_id": -1,
                 "corrections": [
-                    "a bathroomcounter,often can contain,a cupcake", 
-                    "a bathroomcounter,often can contain,a pudding", 
-                    "a bathroomcounter,often can contain,a folder"
+                    "a bathroom counter,often can contain,a cupcake", 
+                    "a bathroom counter,often can contain,a pudding", 
+                    "a bathroom counter,often can contain,a folder"
                 ]
             }, {
                 "idx": "1", 
-                "str": "a toothbrush,is often in,a bedroom", 
+                "str": "a toothbrush,can often be found in,a bedroom", 
                 "correct_id": 0,
                 "corrections": [
-                    "a toothbrush,is often in,a bathroom", 
-                    "a toothbrush,is often in,a fridge", 
-                    "a toothbrush,is often in,a microwave"
+                    "a toothbrush,can often be found in,a bathroom", 
+                    "a toothbrush,can often be found in,a fridge", 
+                    "a toothbrush,can often be found in,a microwave"
                 ]
             }
         ]
     }, {
         "y_bb": "1", 
         "y_xm": "1",
-        "triple": "a duster is used to perform the plugin action",
+        "triple": "a duster can be used to perform the plugin action",
         "parts": [
             {
                 "idx": "0", 
-                "str": "a duster,is used to perform,the bake action", 
+                "str": "a duster,can be used to perform,the bake action", 
                 "correct_id": 1,
                 "corrections": [
-                    "a duster,is used to perform,the fry action", 
-                    "a duster,is used to perform,the dust action", 
-                    "a duster,is used to perform,the discard action"
+                    "a duster,can be used to perform,the fry action", 
+                    "a duster,can be used to perform,the dust action", 
+                    "a duster,can be used to perform,the discard action"
                 ]
             }, {
                 "idx": "1", 
