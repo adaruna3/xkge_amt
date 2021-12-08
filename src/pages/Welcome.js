@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import examples from '../data/explanations_decision_tree_local3_best.json'
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 function Welcome({setCurrentPage, saveTurkId, setExpId, maxExamples}) {
     const [TURKID, setTURKID] = useState(false)
@@ -16,6 +17,19 @@ function Welcome({setCurrentPage, saveTurkId, setExpId, maxExamples}) {
         next_button = "Continue";
     }
 
+    var testids = [];
+    for (var i=1; i < maxTestId; i++) {
+        testids.push(i);
+    }
+
+    const testid_prompt = () => {
+        if (testId) {
+            return ("Selected TEST ID: " + testId + " ")
+        } else {
+            return ("Select TEST ID")
+        }
+    }
+
     return (
         <div className="container-rules">
 
@@ -24,10 +38,10 @@ function Welcome({setCurrentPage, saveTurkId, setExpId, maxExamples}) {
                 <div className="card-body">
                     <h5 className="card-title">Introduction</h5>
                     <p className="card-text">
-                    A virtual assistant, Maeve, has been tasked with predicting whether common-sense facts are true or false. 
-                    Along with predictions, Maeve must provide justifications of each prediction.
+                    A Virtual Assistant (VA) has been tasked with guessing whether common-sense facts are true or false. 
+                    Along with guesses, the VA must provide reasoning for each guess.
                     <br/><br/>
-                    <b>Your task is to identify why Maeve makes incorrect predictions and fix incorrect parts of Maeve's justifications to improve its knowledge.</b>
+                    <b>Your task is to identify why the VA makes incorrect guesses and fix incorrect parts of the VA's reasoning to improve its knowledge.</b>
                     <br/><br/>
                     This HIT consists of 3 stages. Instructions will be provided in each stage.
                     </p>
@@ -52,13 +66,16 @@ function Welcome({setCurrentPage, saveTurkId, setExpId, maxExamples}) {
                 <div className="row text-center">
                     <div className="col-12">
                     <label>Enter TURK ID</label>
-                    <input type="text" className="form-control mx-auto" id="inputTurkID" onChange={(e) => setTurkId(e.target.value)} style={{width:"50%"}}/><br/>
+                    <input type="text" className="form-control mx-auto" id="inputTurkID" onChange={(e) => setTurkId(e.target.value)} style={{width:"30%"}}/><br/>
                     </div>
                 </div>
                 <div className="row text-center">
                     <div className="col-12">
-                    <label>Enter TEST ID (number between 1 and {maxTestId})</label>
-                    <input type="text" className="form-control mx-auto" id="inputTestID" onChange={(e) => setTestId(e.target.value)} style={{width:"25%"}}/>
+                        <DropdownButton id="dropdown-basic-button" title={testid_prompt()} onSelect={(e) => setTestId(e)}>
+                            {testids.map((id) => {
+                                return (<Dropdown.Item eventKey={id}>{id}</Dropdown.Item>)
+                            })}
+                        </DropdownButton><br/>
                     </div>
                 </div>
                 <div className="row text-center mt-3">

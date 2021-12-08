@@ -20,3 +20,5 @@ To run the code with localhost
 1) Install node -  https://nodejs.org/en/ 
 2) Within the project folder, run 'npm install'
 3) Then run 'npm start'
+4) Build 'npm run build'
+5) Publish with firebase 'firebase deploy'

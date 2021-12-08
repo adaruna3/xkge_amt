@@ -8,7 +8,7 @@ function Examples({setCurrentPage, saveData}) {
     const [currentExample, setCurrentExample] = useState(0)
     const [currentAnswered, setCurrentAnswered] = useState(false)
     const [testData, setTestData] = useState([])
-    const max_examples = 1
+    const max_examples = 6
 
     const [mpcState, setMpcState] = useState(
         new Array(examples[currentExample].parts.length).fill(false)
@@ -93,12 +93,12 @@ function Examples({setCurrentPage, saveData}) {
 
     
     const explain_str = () => {
-        const exp_parts = examples[currentExample].parts.map((part) => {
-            if (part.correct_id !== -1) {
+        const exp_parts = examples[currentExample].parts.map((part, index) => {
+            if (part.correct_id !== -1 && part.correct_id != mpcFixState[index]) {
                 return (
                     <div className="form-check" key={"exp_"+part.idx}>
                         <li className="form-check-label">
-                            {"Fact " + (parseInt(part.idx)+1) + ", \"" + part.str.split(',').join(' ') + "\", is False. Instead \"" + part.corrections[part.correct_id].split(',').join(' ') + "\" is True."}
+                            {"Part " + (parseInt(part.idx)+1) + ", \"" + part.str.split(',').join(' ') + "\", is False. Instead \"" + part.corrections[part.correct_id].split(',').join(' ') + "\" is True."}
                         </li>
                     </div>
                 );
@@ -110,7 +110,7 @@ function Examples({setCurrentPage, saveData}) {
             return (
                 <div className="form-check" key="exp">
                     <label className="form-check-label">
-                        The last answer is correct because Maeve's prediction and each part of the justification are correct.
+                        The fist answer is correct because the VA's guess and each part of the reasoning are correct.
                     </label>
                 </div>
             );
@@ -142,10 +142,7 @@ function Examples({setCurrentPage, saveData}) {
                         <div className="col-8">
                             <div className="card mb-5" style={{backgroundColor:'#ff6433 '}}>
                                 <div className="card-body">
-                                    <h5 className="card-title"><b>Your answer is correct!</b><br/><br/>Answer Explanation: </h5>
-                                    <div className="card-text">
-                                        {explain_str()}
-                                    </div>
+                                    <h5 className="card-title"><b>Your answer is correct!</b><br/><br/> </h5>
                                 </div>
                             </div>
                         </div>
@@ -174,7 +171,14 @@ function Examples({setCurrentPage, saveData}) {
             return (<br/>)
         }
     }
-    
+
+    const and_or = (part_idx, parts_length) => {
+        if (part_idx + 1 < parts_length){
+            return (<div>and/or</div>)
+        } else {
+            return (<div></div>)
+        }
+    }
     
     return (
         <div className="container-rules">
@@ -183,34 +187,40 @@ function Examples({setCurrentPage, saveData}) {
                     <div className="card-body">
                         <h5 className="card-title">Displaying Example {currentExample+1} out of {max_examples} </h5>
                         <div className="card-text">
-                            Maeve predicted that:<br/>
+                            Evaluate the VA’s <b>guess</b> and <b>reasoning</b> below. After submitting your answer, you will be provided the correct answer with an explanation. Note that <b>more than one fact may be wrong</b>.<br/><br/>
+                            
+                            The VA’s <b>guess</b>:<br/>
                             <div className="form-check">
                                 <label className="form-check-label">
-                                    {examples[currentExample].triple}
+                                    "{examples[currentExample].triple}"
                                 </label>
                             </div>
-                            Because:<br/> {
+                            The VA's <b>reasoning</b>:<br/> {
                                 examples[currentExample].parts.map((part, index) => {
-                                    if (index === examples[currentExample].parts.length-1) {
-                                        return (<div className="form-check" key={"justi_"+part.idx}>
-                                            <label className="form-check-label">
-                                                {part.str.split(',').join(' ')+"\n"}
-                                            </label>
-                                        </div>)
-                                    } else {
-                                        return (<div className="form-check" key={"justi_"+part.idx}>
-                                            <label className="form-check-label">
-                                                {part.str.split(',').join(' ')+",\nand "}
-                                            </label>
-                                        </div>)
-                                    }
+                                    return (<div className="form-check" key={"justi_"+part.idx}>
+                                        <label className="form-check-label">
+                                        Part {index+1} of the VA's reasoning is, "{part.str.split(',').join(' ')}"
+                                        </label>
+                                    </div>)
                                 })
                             }
-                            <br/>
-                            Evaluate Maeve's prediction as best you can below. After submitting your answer, you will be provided the correct answer with an explanation.
-                            <br/>
-                            Note that <b>more than one fact may be false</b>.
                         </div><hr/>
+                        <div className="form-check">
+                            <input 
+                                className="form-check-input" 
+                                type="checkbox" 
+                                value="" 
+                                id={examples[currentExample].parts.length} 
+                                checked={correctState}
+                                onChange={() => correctHandleOnChange()}>
+                            </input>
+                            <label className="form-check-label">
+                                The VA's guess is <b>correct</b>.<br/><br/>
+                            </label>
+                        </div>
+                        <div className="form-check">
+                            The VA's guess is <b>wrong</b> because...
+                        </div>
                         {examples[currentExample].parts.map((part, index) => (
                             <div className="form-check" key={"check_" + part.idx}>
                                 <input 
@@ -222,7 +232,7 @@ function Examples({setCurrentPage, saveData}) {
                                     onChange={() => mpcHandleOnChange(index)}>
                                 </input>
                                 <label className="form-check-label">
-                                    Fact {parseInt(part.idx)+1}:  "{part.str.split(',').join(' ')}" is false
+                                    <b>Part {parseInt(part.idx)+1}</b> of the VA's reasoning is <b>wrong</b>,  "{part.str.split(',').join(' ')}" is false.
                                 </label>
                                 {part.corrections.map((correction, index) => {
                                     if (mpcState[part.idx]) {
@@ -236,7 +246,7 @@ function Examples({setCurrentPage, saveData}) {
                                                     onChange={(event) => handleOnChange(event)}>
                                                 </input>
                                                 <label className="form-check-label">
-                                                    "{correction.split(',').join(' ')}" is true
+                                                    Instead, "{correction.split(',').join(' ')}" is true.
                                                 </label>
                                             </div>
                                         );
@@ -244,21 +254,9 @@ function Examples({setCurrentPage, saveData}) {
                                         return (<div key={"check_" + part.idx + "_radio_" + index}></div>)
                                     }
                                 })}
+                                {and_or(index, examples[currentExample].parts.length)}
                             </div>
                         ))}
-                        <div className="form-check">
-                            <input 
-                                className="form-check-input" 
-                                type="checkbox" 
-                                value="" 
-                                id={examples[currentExample].parts.length} 
-                                checked={correctState}
-                                onChange={() => correctHandleOnChange()}>
-                            </input>
-                            <label className="form-check-label">
-                                Maeve's prediction is correct.
-                            </label>
-                        </div>
                         <hr></hr><p><br></br></p>
                         {explanation()}
                         <button 

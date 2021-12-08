@@ -21,7 +21,7 @@ function App() {
     }
   );
   var [expId, setExpId] = useState(0);
-  const maxTestExamples = 1
+  const maxTestExamples = 15
 
   useEffect(() => {
     window.scrollTo(0, 0)

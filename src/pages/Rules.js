@@ -8,14 +8,14 @@ function Rules({setCurrentPage}) {
                     <div className="card-body">
                         <h5 className="card-title">Stage 1 - Practice</h5>
                         <p className="card-text">
-                        In this stage, we will show you 2 examples where Maeve makes correct predictions that were justified using true facts, and 4
-                        examples where Maeve makes incorrect predictions that were justified using false facts.<br/><br/>
+                        In each question that follows, the VA will try to make a (correct or incorrect) <b>guess</b> about something 
+                        it doesn’t know, and then justify its guess based on (correct or incorrect) <b>reasoning</b>.<br/><br/> 
+                        
+                        Your job is to identify which <b>guesses</b> and <b>reasons</b> are correct and incorrect.<br/><br/>
 
-                        In each example, you will evaluate Maeve's predictions and correct any false facts in its justifications.<br/><br/>
+                        After answering each question, you will be given the correct answer and an explanation.<br/><br/>
 
-                        After answering each example, you will be given the correct answer and an explanation.<br/><br/>
-
-                        Pay close attention to each example and the correct answer to <b>learn to identify which facts in a justification are incorrect</b>.
+                        Pay close attention to each correct answer provided to <b>learn to identify which guesses and reasons are incorrect</b>.
                         </p>
                         <br/><hr/>
                         <button 

@@ -8,13 +8,14 @@ function PreTest({setCurrentPage, maxExamples}) {
                     <div className="card-body">
                         <h5 className="card-title">Stage 2 - Test</h5>
                         <p className="card-text">
-                        Like the Practice Stage, in this stage you will evaluate {maxExamples} predictions Maeve has made, along 
-                        with corresponding justifications.<br/><br/>
+                        Like the Practice Stage, in this stage you will evaluate {maxExamples} <b>guesses</b> the VA has made, along 
+                        with corresponding <b>reasoning</b>.<br/><br/>
+
+                        Your job is to identify which <b>guesses</b> and <b>reasons</b> are correct and incorrect.<br/><br/>
 
                         However, the correct answers will <i>NOT</i> be provided. Do your <i>best</i> to answer each question.<br/><br/>
 
-                        Please <i>carefully</i> read Maeve's justifications so you can identify incorrect parts and imporve its knowledge!<br/><br/>
-
+                        Please <i>carefully</i> read the VA's reasoning so you can identify incorrect parts and imporve its knowledge!<br/><br/>
                         </p>
                         <hr/>
                         <button 
