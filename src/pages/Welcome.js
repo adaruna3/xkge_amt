@@ -38,7 +38,7 @@ function Welcome({setCurrentPage, saveTurkId, setExpId, maxExamples}) {
                 <div className="card-body">
                     <h5 className="card-title">Introduction</h5>
                     <p className="card-text">
-                    A Virtual Assistant (VA) has been tasked with guessing whether common-sense facts are true or false. 
+                    A Virtual Assistant (VA) has been tasked with guessing whether common-sense facts are true ("A dishwasher often can contain a coffee pot") or false ("A dishwasher often can contain a bedroom"). 
                     Along with guesses, the VA must provide reasoning for each guess.
                     <br/><br/>
                     <b>Your task is to identify why the VA makes incorrect guesses and fix incorrect parts of the VA's reasoning to improve its knowledge.</b>

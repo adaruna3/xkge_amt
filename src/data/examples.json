@@ -1,178 +1,214 @@
 [
     {
-        "triple": "a closet drawer can often be found in a bedroom", 
         "y_bb": "1", 
         "y_xm": "1", 
+        "triple": "A stove can be dirty.",
         "parts": [
             {
                 "idx": "0", 
-                "str": "a closet drawer,can change the state of,a pants",
+                "fact": "stove.o,ObjhasState,clean.s", 
+                "str": "A stove can be clean.", 
                 "correct_id": -1,
                 "corrections": [
-                    "a closet drawer,can change the state of,a broom",
-                    "a closet drawer,can change the state of,a toilet",
-                    "a closet drawer,can change the state of,a bed"
+                    "A candy bar can be clean.", 
+                    "A faucet can be clean.", 
+                    "A donut can be clean."
                 ]
             }, {
                 "idx": "1", 
-                "str": "a pants,can often be found in,a bedroom",
+                "fact": "clean.s,_InverseStateOf,dirty.s", 
+                "str": "An object being clean is the opposite of being dirty.", 
                 "correct_id": -1,
                 "corrections": [
-                    "a pants,can often be found in,a blender",
-                    "a pants,can often be found in,a microwave",
-                    "a pants,can often be found in,a bathtub"
+                    "An object being salad is the opposite of being dirty.", 
+                    "An object being mug is the opposite of being dirty.", 
+                    "An object being wine is the opposite of being dirty."
                 ]
             }
         ]
     }, {
-        "triple": "a fork can have performed on it the rinse action", 
         "y_bb": "1", 
-        "y_xm": "1",
+        "y_xm": "1", 
+        "triple": "A sponge is usually used on a bathtub.",
         "parts": [
             {
                 "idx": "0", 
-                "str": "a fork,has a possible state of,the clean state",
+                "fact": "sponge.o,ObjUsedTo,sponge.a", 
+                "str": "A sponge is used to sponge.", 
                 "correct_id": -1,
                 "corrections": [
-                    "a fork,has a possible state of,the unplugged state",
-                    "a fork,has a possible state of,the open state",
-                    "a fork,has a possible state of,the closed state"
+                    "A bucket is used to sponge.", 
+                    "A knife is used to sponge.",
+                    "A fryingpan is used to sponge."
                 ]
             }, {
                 "idx": "1", 
-                "str": "the clean state,is caused by,the rinse action",
+                "fact": "sponge.a,_ObjUsedTo,towel.o", 
+                "str": "Sponging can be done using a towel.", 
                 "correct_id": -1,
                 "corrections": [
-                    "the open state,is caused by,the rinse action",
-                    "the closed state,is caused by,the rinse action",
-                    "the plugged in state,is caused by,the rinse action"
-                ]
-            }
-        ]
-    }, {
-        "triple": "a coatrack has a possible state of the cooked state", 
-        "y_bb": "1", 
-        "y_xm": "1",
-        "parts": [
-            {
-                "idx": "0", 
-                "str": "a coatrack,has a possible state of,the full state",
-                "correct_id": -1,
-                "corrections": [
-                    "a laptop,has a possible state of,the full state",
-                    "a book,has a possible state of,the full state",
-                    "a knife,has a possible state of,the full state"
-                ]
-            }, {
-                "idx": "1", 
-                "str": "the full state,is the opposite state of,the cooked state",
-                "correct_id": 1,
-                "corrections": [
-                    "the full state,is the opposite state of,the on state", 
-                    "the full state,is the opposite state of,the empty state", 
-                    "the full state,is the opposite state of,the clean state"
-                ]
-            }
-        ]
-    }, {
-        "triple": "a waterglass can be used to perform the vacuum action", 
-        "y_bb": "1", 
-        "y_xm": "1",
-        "parts": [
-            {
-                "idx": "0", 
-                "str": "a waterglass,can have performed on it,the wash action",
-                "correct_id": -1,
-                "corrections": [
-                    "a waterglass,can have performed on it,the turn on action",
-                    "a waterglass,can have performed on it,the turn off action",
-                    "a waterglass,can have performed on it,the plugin action"
-                ]
-            }, {
-                "idx": "1", 
-                "str": "the wash action,can be done using,a plate",
-                "correct_id": 2,
-                "corrections": [
-                    "the wash action,can be done using,a rubbishbin", 
-                    "the wash action,can be done using,a garbagecan",
-                    "the wash action,can be done using,a dishwasher"
+                    "Sponging can be done using a chair.", 
+                    "Sponging can be done using a carrot.", 
+                    "Sponging can be done using a radio."
                 ]
             }, {
                 "idx": "2", 
-                "str": "a plate,can change the state of,a pan",
-                "correct_id": 0,
+                "fact": "towel.o,OperatesOn,bathroom_counter.o", 
+                "str": "A towel is usually used on a bathroom counter.", 
+                "correct_id": -1,
                 "corrections": [
-                    "a dishwasher,can change the state of,a pan",
-                    "a floor,can change the state of,a pan",
-                    "a bed,can change the state of,a pan"
+                    "A towel is usually used on a slipper.", 
+                    "A towel is usually used on a put.", 
+                    "A towel is usually used on a switch off."
+                ]
+            }
+        ]
+    }, {
+        "y_bb": "1", 
+        "y_xm": "1", 
+        "triple": "A donut can be closed.",
+        "parts": [
+            {
+                "idx": "0", 
+                "fact": "donut.o,ObjCanBe,pick_up.a", 
+                "str": "A donut can be picked up.", 
+                "correct_id": -1,
+                "corrections": [
+                    "A toilet can be picked up.", 
+                    "A stove can be picked up.", 
+                    "A bathtub can be picked up."
+                ]
+            }, {
+                "idx": "1", 
+                "fact": "pick_up.a,InverseActionOf,close.a", 
+                "str": "Picking up an object is the opposite of closing an object.", 
+                "correct_id": 1,
+                "corrections": [
+                    "Picking up an object is the opposite of plugging in an object.", 
+                    "Picking up an object is the opposite of dropping an object.", 
+                    "Picking up an object is the opposite of opening an object."
+                ]
+            }
+        ]
+    }, {
+        "y_bb": "1", 
+        "y_xm": "1", 
+        "triple": "A tooth brush can be empty.",
+        "parts": [
+            {
+                "idx": "0", 
+                "fact": "tooth_brush.o,ObjCanBe,pour.a", 
+                "str": "A tooth brush can be poured.", 
+                "correct_id": 1,
+                "corrections": [
+                    "Pants can be poured.", 
+                    "Milk can be poured.", 
+                    "A shirt can be poured."
+                ]
+            }, {
+                "idx": "1", 
+                "fact": "pour.a,_InverseActionOf,unplug.a", 
+                "str": "Pouring an object is the opposite of unpluging an object.", 
+                "correct_id": 1,
+                "corrections": [
+                    "Pouring an object is the opposite of puting an object.", 
+                    "Pouring an object is the opposite of filling an object.", 
+                    "Pouring an object is the opposite of pluging in an object."
+                ]
+            }, {
+                "idx": "2", 
+                "fact": "unplug.a,_InverseActionOf,empty.a", 
+                "str": "Unpluging an object is the opposite of emptying an object.", 
+                "correct_id": 1,
+                "corrections": [
+                    "Puting an object is the opposite of emptying an object.", 
+                    "Filling an object is the opposite of emptying an object.", 
+                    "Pluging in an object is the opposite of emptying an object."
                 ]
             }, {
                 "idx": "3", 
-                "str": "a pan,can be used to perform,the vacuum action", 
-                "correct_id": 1,
+                "fact": "empty.a,HasEffect,empty.s", 
+                "str": "The act of emptying an object will make it empty.", 
+                "correct_id": -1,
                 "corrections": [
-                    "a pan,can be used to perform,the wipe action",
-                    "a pan,can be used to perform,the pour action", 
-                    "a pan,can be used to perform,the fry action"
+                    "The act of rinseing an object will make it empty.", 
+                    "The act of candleing an object will make it empty.", 
+                    "The act of slippering an object will make it empty."
                 ]
             }
         ]
     }, {
         "y_bb": "1", 
         "y_xm": "1", 
-        "triple": "a bathroom counter can often be found in a bedroom",
+        "triple": "The floor can be cooked.",
         "parts": [
             {
                 "idx": "0", 
-                "str": "a bathroom counter,often can contain,a toothbrush", 
-                "correct_id": -1,
-                "corrections": [
-                    "a bathroom counter,often can contain,a cupcake", 
-                    "a bathroom counter,often can contain,a pudding", 
-                    "a bathroom counter,often can contain,a folder"
-                ]
-            }, {
-                "idx": "1", 
-                "str": "a toothbrush,can often be found in,a bedroom", 
+                "fact": "floor.o,ObjhasState,uncooked.s", 
+                "str": "The floor can be uncooked.", 
                 "correct_id": 0,
                 "corrections": [
-                    "a toothbrush,can often be found in,a bathroom", 
-                    "a toothbrush,can often be found in,a fridge", 
-                    "a toothbrush,can often be found in,a microwave"
-                ]
-            }
-        ]
-    }, {
-        "y_bb": "1", 
-        "y_xm": "1",
-        "triple": "a duster can be used to perform the plugin action",
-        "parts": [
-            {
-                "idx": "0", 
-                "str": "a duster,can be used to perform,the bake action", 
-                "correct_id": 1,
-                "corrections": [
-                    "a duster,can be used to perform,the fry action", 
-                    "a duster,can be used to perform,the dust action", 
-                    "a duster,can be used to perform,the discard action"
+                    "A carrot can be uncooked.", 
+                    "A computer can be uncooked.", 
+                    "A wall shelf can be uncooked."
                 ]
             }, {
                 "idx": "1", 
-                "str": "the bake action,results in,the clean state", 
-                "correct_id": 2,
+                "fact": "uncooked.s,_InverseStateOf,cooked.s", 
+                "str": "An object being uncooked is the opposite of being cooked.",
+                "correct_id": -1,
                 "corrections": [
-                    "the plugin action,results in,the clean state", 
-                    "the microwave action,results in,the clean state", 
-                    "the dust action,results in,the clean state"
+                    "An object being wall is the opposite of being cooked.", 
+                    "An object being wall shelf is the opposite of being cooked.", 
+                    "An object being pudding is the opposite of being cooked."
+                ]
+            }
+        ] 
+        
+    }, {
+        "y_bb": "1", 
+        "y_xm": "1", 
+        "triple": "A stove usually operates on a keyboard.",
+        "parts": [
+            {
+                "idx": "0", 
+                "fact": "stove.o,ObjInRoom,bedroom.r", 
+                "str": "A stove can often be found in a bedroom.", 
+                "correct_id": 0,
+                "corrections": [
+                    "A dustbrush can often be found in a bedroom.", 
+                    "A sink can often be found in a bedroom.", 
+                    "A kitchen cabinet can often be found in a bedroom."
+                ]
+            }, {
+                "idx": "1", 
+                "fact": "bedroom.r,_ObjInRoom,napkin.o", 
+                "str": "A bedroom often can contain a napkin.", 
+                "correct_id": -1,
+                "corrections": [
+                    "A bedroom often can contain a featherduster.", 
+                    "A bedroom often can contain a bellpepper.", 
+                    "A bedroom often can contain a nightstand."
                 ]
             }, {
                 "idx": "2", 
-                "str": "the clean state,is caused by,the plugin action",
-                "correct_id": 2,
+                "fact": "napkin.o,ObjUsedTo,wipe.a", 
+                "str": "A napkin is used to wipe.", 
+                "correct_id": -1,
                 "corrections": [
-                    "the clean state,is caused by,the unplug action", 
-                    "the clean state,is caused by,the close action", 
-                    "the clean state,is caused by,the wipe action"
+                    "A napkin is used to scouring pad.", 
+                    "A napkin is used to napkin.", 
+                    "A napkin is used to cuttingboard."
+                ]
+            }, {
+                "idx": "3", 
+                "fact": "wipe.a,_ObjCanBe,keyboard.o", 
+                "str": "A keyboard can be wiped.", 
+                "correct_id": -1,
+                "corrections": [
+                    "A cupcake can be wiped.", 
+                    "Bananas can be wiped.", 
+                    "A candle can be wiped."
                 ]
             }
         ]

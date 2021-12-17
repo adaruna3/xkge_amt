@@ -120,16 +120,18 @@ function Examples({setCurrentPage, saveData}) {
     }
 
     const handleOnChange = (event) => {
-        if (mpcState[parseInt(event.target.name)]) {
-            const updatedFixState = mpcFixState.map((item, index) =>
-                index === parseInt(event.target.name) ? parseInt(event.target.value) : item
-            );
-            setMpcFixState(updatedFixState);
-        } else {
-            const updatedFixState = mpcFixState.map((item, index) =>
-                index === parseInt(event.target.name) ? -1 : item
-            );
-            setMpcFixState(updatedFixState);
+        if (!currentAnswered) {
+            if (mpcState[parseInt(event.target.name)]) {
+                const updatedFixState = mpcFixState.map((item, index) =>
+                    index === parseInt(event.target.name) ? parseInt(event.target.value) : item
+                );
+                setMpcFixState(updatedFixState);
+            } else {
+                const updatedFixState = mpcFixState.map((item, index) =>
+                    index === parseInt(event.target.name) ? -1 : item
+                );
+                setMpcFixState(updatedFixState);
+            }
         }
     };
 
@@ -221,28 +223,29 @@ function Examples({setCurrentPage, saveData}) {
                         <div className="form-check">
                             The VA's guess is <b>wrong</b> because...
                         </div>
-                        {examples[currentExample].parts.map((part, index) => (
+                        {examples[currentExample].parts.map((part, index1) => (
                             <div className="form-check" key={"check_" + part.idx}>
                                 <input 
                                     className="form-check-input" 
                                     type="checkbox" 
                                     value="" 
                                     id={part.idx} 
-                                    checked={mpcState[index]}
-                                    onChange={() => mpcHandleOnChange(index)}>
+                                    checked={mpcState[index1]}
+                                    onChange={() => mpcHandleOnChange(index1)}>
                                 </input>
                                 <label className="form-check-label">
                                     <b>Part {parseInt(part.idx)+1}</b> of the VA's reasoning is <b>wrong</b>,  "{part.str.split(',').join(' ')}" is false.
                                 </label>
-                                {part.corrections.map((correction, index) => {
+                                {part.corrections.map((correction, index2) => {
                                     if (mpcState[part.idx]) {
                                         return (
-                                            <div className="form-check" key={"check" + part.idx + "_radio_" + index}>
+                                            <div className="form-check" key={"check" + part.idx + "_radio_" + index2}>
                                                 <input 
                                                     className="form-check-input" 
                                                     type="radio" 
-                                                    value={index} 
-                                                    name={part.idx} 
+                                                    value={index2} 
+                                                    name={part.idx}
+                                                    checked={mpcFixState[index1] === index2}
                                                     onChange={(event) => handleOnChange(event)}>
                                                 </input>
                                                 <label className="form-check-label">
@@ -251,10 +254,10 @@ function Examples({setCurrentPage, saveData}) {
                                             </div>
                                         );
                                     } else {
-                                        return (<div key={"check_" + part.idx + "_radio_" + index}></div>)
+                                        return (<div key={"check_" + part.idx + "_radio_" + index2}></div>)
                                     }
                                 })}
-                                {and_or(index, examples[currentExample].parts.length)}
+                                {and_or(index1, examples[currentExample].parts.length)}
                             </div>
                         ))}
                         <hr></hr><p><br></br></p>

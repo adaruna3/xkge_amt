@@ -13,9 +13,9 @@ function PreTest({setCurrentPage, maxExamples}) {
 
                         Your job is to identify which <b>guesses</b> and <b>reasons</b> are correct and incorrect.<br/><br/>
 
-                        However, the correct answers will <i>NOT</i> be provided. Do your <i>best</i> to answer each question.<br/><br/>
+                        However, the correct answers will <b>NOT</b> be provided. Do your <b>best</b> to answer each question.<br/><br/>
 
-                        Please <i>carefully</i> read the VA's reasoning so you can identify incorrect parts and imporve its knowledge!<br/><br/>
+                        Please <b>carefully</b> read the VA's reasoning so you can identify incorrect parts and imporve its knowledge!<br/><br/>
                         </p>
                         <hr/>
                         <button 

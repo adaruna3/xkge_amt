@@ -9,7 +9,7 @@ function Rules({setCurrentPage}) {
                         <h5 className="card-title">Stage 1 - Practice</h5>
                         <p className="card-text">
                         In each question that follows, the VA will try to make a (correct or incorrect) <b>guess</b> about something 
-                        it doesn’t know, and then justify its guess based on (correct or incorrect) <b>reasoning</b>.<br/><br/> 
+                        it does not know, and then justify its guess based on (correct or incorrect) <b>reasoning</b>.<br/><br/> 
                         
                         Your job is to identify which <b>guesses</b> and <b>reasons</b> are correct and incorrect.<br/><br/>
 

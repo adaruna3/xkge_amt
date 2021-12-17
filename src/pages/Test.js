@@ -1,32 +1,33 @@
 import React, {useState} from 'react';
 import examples from '../data/explanations_decision_tree_local3_best.json'
+import golden from '../data/examples.json'
 
 
 
 function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
     const [prevExample, setPrevExample] = useState(firstExample-1);
-    const [currentExample, setCurrentExample] = useState(firstExample);
+    const [currentExampleNum, setCurrentExampleNum] = useState(firstExample);
+    const [currentExample, setCurrentExample] = useState(examples[currentExampleNum]);
     const [testData, setTestData] = useState([]);
 
-    var max_examples = firstExample + maxExamples;
+    var max_examples = firstExample + maxExamples + 1;
     if (firstExample + maxExamples > examples.length){
-        max_examples = examples.length;
+        max_examples = examples.length + 1;
     }
-        
-
+    
     const [mpcState, setMpcState] = useState(
-        new Array(examples[currentExample].parts.length).fill(false)
+        new Array(currentExample.parts.length).fill(false)
     );
     const [mpcFixState, setMpcFixState] = useState(
-        new Array(examples[currentExample].parts.length).fill(-1)
+        new Array(currentExample.parts.length).fill(-1)
     );
     const [correctState, setCorrectState] = useState(false);
     
-    if (prevExample !== currentExample) {
-        setMpcState(new Array(examples[currentExample].parts.length).fill(false));
-        setMpcFixState(new Array(examples[currentExample].parts.length).fill(-1));
+    if (prevExample !== currentExampleNum) {
+        setMpcState(new Array(currentExample.parts.length).fill(false));
+        setMpcFixState(new Array(currentExample.parts.length).fill(-1));
         setCorrectState(false);
-        setPrevExample(currentExample);
+        setPrevExample(currentExampleNum);
     }
 
     const validSubmit = () => {
@@ -48,7 +49,7 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
     var next_button;
     if (!validSubmit()) {
         next_button = "Disabled. Complete your selection."
-    } else if (currentExample+1 < max_examples) {
+    } else if (currentExampleNum+1 < max_examples) {
         next_button = "Next Example"
     } else {
         next_button = "Next Stage"
@@ -69,7 +70,7 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
     };
 
     const correctHandleOnChange = () => {
-        setMpcState(new Array(examples[currentExample].parts.length).fill(false));
+        setMpcState(new Array(currentExample.parts.length).fill(false));
         const updatedFixState = mpcFixState.map((item, index) =>
             mpcState[index] ? item : -1
         );
@@ -104,18 +105,18 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
             <div className="container">
                 <div className="card mb-5" style={{backgroundColor:'#e6f7ff'}}>
                     <div className="card-body">
-                        <h5 className="card-title">Displaying Question {currentExample-firstExample+1} out of {max_examples-firstExample} </h5>
+                        <h5 className="card-title">Displaying Question {currentExampleNum-firstExample+1} out of {max_examples-firstExample} </h5>
                         <div className="card-text">
                             Evaluate the VA’s <b>guess</b> and <b>reasoning</b> below. Note that <b>more than one fact may be wrong</b>.<br/><br/>
 
                             The VA’s <b>guess</b>:<br/>
                             <div className="form-check">
                                 <label className="form-check-label">
-                                    "{examples[currentExample].triple}"
+                                    "{currentExample.triple}"
                                 </label>
                             </div>
                             The VA's <b>reasoning</b>:<br/> {
-                                examples[currentExample].parts.map((part, index) => {
+                                currentExample.parts.map((part, index) => {
                                     return (<div className="form-check" key={"justi_"+part.idx}>
                                         <label className="form-check-label">
                                         Part {index+1} of the VA's reasoning is, "{part.str.split(',').join(' ')}"
@@ -129,7 +130,7 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
                                 className="form-check-input" 
                                 type="checkbox" 
                                 value="" 
-                                id={examples[currentExample].parts.length} 
+                                id={currentExample.parts.length} 
                                 checked={correctState}
                                 onChange={() => correctHandleOnChange()}>
                             </input>
@@ -140,40 +141,68 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
                         <div className="form-check">
                             The VA's guess is <b>wrong</b> because...
                         </div>
-                        {examples[currentExample].parts.map((part, index) => (
+                        {currentExample.parts.map((part, index1) => (
                             <div className="form-check" key={"check_" + part.idx}>
                                 <input 
                                     className="form-check-input" 
                                     type="checkbox" 
                                     value="" 
                                     id={part.idx} 
-                                    checked={mpcState[index]}
-                                    onChange={() => mpcHandleOnChange(index)}>
+                                    checked={mpcState[index1]}
+                                    onChange={() => mpcHandleOnChange(index1)}>
                                 </input>
                                 <label className="form-check-label">
                                     <b>Part {parseInt(part.idx)+1}</b> of the VA's reasoning is <b>wrong</b>,  "{part.str.split(',').join(' ')}" is false.
                                 </label>
-                                {part.corrections.map((correction, index) => {
+                                {part.corrections.map((correction, index2) => {
                                     if (mpcState[part.idx]) {
-                                        return (
-                                            <div className="form-check" key={"check_" + part.idx + "_radio_" + index}>
-                                                <input 
-                                                    className="form-check-input" 
-                                                    type="radio" 
-                                                    value={index} 
-                                                    name={part.idx} 
-                                                    onChange={(event) => handleOnChange(event)}>
-                                                </input>
-                                                <label className="form-check-label">
-                                                    Instead, "{correction.split(',').join(' ')}" is true.
-                                                </label>
-                                            </div>
-                                        );
+                                        if (index2+1 === part.corrections.length) {
+                                            return (
+                                                <div className="form-check" key={"check_" + part.idx + "_radio_" + index2}>
+                                                    <input 
+                                                        className="form-check-input" 
+                                                        type="radio" 
+                                                        value={index2} 
+                                                        name={part.idx} 
+                                                        onChange={(event) => handleOnChange(event)}>
+                                                    </input>
+                                                    <label className="form-check-label">
+                                                        Instead, "{correction.split(',').join(' ')}" is true.
+                                                    </label>
+                                                    <br/>
+                                                    <input 
+                                                        className="form-check-input" 
+                                                        type="radio" 
+                                                        value={3} 
+                                                        name={part.idx} 
+                                                        onChange={(event) => handleOnChange(event)}>
+                                                    </input>
+                                                    <label className="form-check-label">
+                                                        None of the above are true.
+                                                    </label>
+                                                </div>
+                                            );
+                                        } else {
+                                            return (
+                                                <div className="form-check" key={"check_" + part.idx + "_radio_" + index2}>
+                                                    <input 
+                                                        className="form-check-input" 
+                                                        type="radio" 
+                                                        value={index2} 
+                                                        name={part.idx} 
+                                                        onChange={(event) => handleOnChange(event)}>
+                                                    </input>
+                                                    <label className="form-check-label">
+                                                        Instead, "{correction.split(',').join(' ')}" is true.
+                                                    </label>
+                                                </div>
+                                            );
+                                        }
                                     } else {
-                                        return (<div key={"check_" + part.idx + "_radio_" + index}></div>)
+                                        return (<div key={"check_" + part.idx + "_radio_" + index2}></div>);
                                     }
                                 })}
-                                {and_or(index, examples[currentExample].parts.length)}
+                                {and_or(index1, currentExample.parts.length)}
                             </div>
                         ))}
                         <hr></hr><p><br></br></p>
@@ -182,13 +211,21 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
                             disabled={!validSubmit()} 
                             className="btn btn-outline-primary d-block mx-auto"  
                             onClick={ () => {
-                                if (currentExample+1 < max_examples) {
+                                if (currentExampleNum+2 < max_examples) {
                                     testData.push(mpcFixState);
                                     setTestData(testData);
-                                    setMpcState(new Array(examples[currentExample+1].parts.length).fill(false));
-                                    setMpcFixState(new Array(examples[currentExample+1].parts.length).fill(-1));
+                                    setMpcState(new Array(examples[currentExampleNum+1].parts.length).fill(false));
+                                    setMpcFixState(new Array(examples[currentExampleNum+1].parts.length).fill(-1));
                                     setCorrectState(false);
-                                    setCurrentExample(currentExample+1);
+                                    setCurrentExampleNum(currentExampleNum+1);
+                                } else if (currentExampleNum+1 < max_examples) {
+                                    testData.push(mpcFixState);
+                                    setTestData(testData);
+                                    setMpcState(new Array(golden[1].parts.length).fill(false));
+                                    setMpcFixState(new Array(golden[1].parts.length).fill(-1));
+                                    setCorrectState(false);
+                                    setCurrentExample(golden[1]);
+                                    setCurrentExampleNum(currentExampleNum+1);
                                 } else {
                                     testData.push(mpcFixState);
                                     saveData(testData);
