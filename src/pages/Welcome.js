@@ -2,16 +2,16 @@ import React, { useState } from 'react'
 import examples from '../data/explanations_decision_tree_local3_best.json'
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 
-function Welcome({setCurrentPage, saveTurkId, setExpId, maxExamples}) {
+function Welcome({setCurrentPage, saveTurkId, maxExamples}) {
     const [TURKID, setTURKID] = useState(false)
 
     const [turkId, setTurkId] = useState(false)
-    const [testId, setTestId] = useState(false)
+    // const [testId, setTestId] = useState(false)
     
     const maxTestId = parseInt(examples.length / maxExamples) + 1
 
     var next_button;
-    if (!(turkId && testId)) {
+    if (!turkId) {
         next_button = "Disabled. Complete your selection.";
     } else {
         next_button = "Continue";
@@ -22,13 +22,13 @@ function Welcome({setCurrentPage, saveTurkId, setExpId, maxExamples}) {
         testids.push(i);
     }
 
-    const testid_prompt = () => {
-        if (testId) {
-            return ("Selected TEST ID: " + testId + " ")
-        } else {
-            return ("Select TEST ID")
-        }
-    }
+    // const testid_prompt = () => {
+    //     if (testId) {
+    //         return ("Selected TEST ID: " + testId + " ")
+    //     } else {
+    //         return ("Select TEST ID")
+    //     }
+    // }
 
     return (
         <div className="container-rules">
@@ -69,7 +69,7 @@ function Welcome({setCurrentPage, saveTurkId, setExpId, maxExamples}) {
                     <input type="text" className="form-control mx-auto" id="inputTurkID" onChange={(e) => setTurkId(e.target.value)} style={{width:"30%"}}/><br/>
                     </div>
                 </div>
-                <div className="row text-center">
+                {/* <div className="row text-center">
                     <div className="col-12">
                         <DropdownButton id="dropdown-basic-button" title={testid_prompt()} onSelect={(e) => setTestId(e)}>
                             {testids.map((id) => {
@@ -77,7 +77,7 @@ function Welcome({setCurrentPage, saveTurkId, setExpId, maxExamples}) {
                             })}
                         </DropdownButton><br/>
                     </div>
-                </div>
+                </div> */}
                 <div className="row text-center mt-3">
                     <div className="col-12">
                         <button 
@@ -85,10 +85,10 @@ function Welcome({setCurrentPage, saveTurkId, setExpId, maxExamples}) {
                             className="btn btn-outline-primary"
                             onClick={()=> {
                                 saveTurkId(turkId);
-                                setExpId(testId);
+                                // setExpId(testId);
                                 setCurrentPage('Rules');
                             }} 
-                            disabled={!(turkId && testId)}
+                            disabled={!turkId}
                         >
                         {next_button}
                         </button>

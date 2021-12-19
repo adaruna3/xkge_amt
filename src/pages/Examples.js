@@ -43,6 +43,9 @@ function Examples({setCurrentPage, saveData}) {
     }
 
     const evaluateSubmit = () => {
+        console.log("mpcState " + mpcState);
+        console.log("mpcFixState " + mpcFixState);
+        console.log("correctState " + correctState);
         const mpcEval = mpcFixState.map((item, mpcIndex) => {
             if (item === examples[currentExample].parts[mpcIndex].correct_id) {
                 return true;
@@ -83,9 +86,7 @@ function Examples({setCurrentPage, saveData}) {
     const correctHandleOnChange = () => {
         if (!currentAnswered) {
             setMpcState(new Array(examples[currentExample].parts.length).fill(false));
-            const updatedFixState = mpcFixState.map((item, index) =>
-                mpcState[index] ? item : -1
-            );
+            const updatedFixState = mpcFixState.map(() => -1);
             setMpcFixState(updatedFixState);
             setCorrectState(!correctState);
         }
@@ -94,7 +95,7 @@ function Examples({setCurrentPage, saveData}) {
     
     const explain_str = () => {
         const exp_parts = examples[currentExample].parts.map((part, index) => {
-            if (part.correct_id !== -1 && part.correct_id != mpcFixState[index]) {
+            if (part.correct_id !== -1 && part.correct_id !== mpcFixState[index]) {
                 return (
                     <div className="form-check" key={"exp_"+part.idx}>
                         <li className="form-check-label">
@@ -238,21 +239,51 @@ function Examples({setCurrentPage, saveData}) {
                                 </label>
                                 {part.corrections.map((correction, index2) => {
                                     if (mpcState[part.idx]) {
-                                        return (
-                                            <div className="form-check" key={"check" + part.idx + "_radio_" + index2}>
-                                                <input 
-                                                    className="form-check-input" 
-                                                    type="radio" 
-                                                    value={index2} 
-                                                    name={part.idx}
-                                                    checked={mpcFixState[index1] === index2}
-                                                    onChange={(event) => handleOnChange(event)}>
-                                                </input>
-                                                <label className="form-check-label">
-                                                    Instead, "{correction.split(',').join(' ')}" is true.
-                                                </label>
-                                            </div>
-                                        );
+                                        if (index2+1 === part.corrections.length) {
+                                            return (
+                                                <div className="form-check" key={"check" + part.idx + "_radio_" + index2}>
+                                                    <input 
+                                                        className="form-check-input" 
+                                                        type="radio" 
+                                                        value={index2} 
+                                                        name={part.idx}
+                                                        checked={mpcFixState[index1] === index2}
+                                                        onChange={(event) => handleOnChange(event)}>
+                                                    </input>
+                                                    <label className="form-check-label">
+                                                        Instead, "{correction.split(',').join(' ')}" is true.
+                                                    </label>
+                                                    <br/>
+                                                    <input 
+                                                        className="form-check-input" 
+                                                        type="radio" 
+                                                        value={3} 
+                                                        name={part.idx} 
+                                                        onChange={(event) => handleOnChange(event)}>
+                                                    </input>
+                                                    <label className="form-check-label">
+                                                        None of the above are true.
+                                                    </label>
+                                                </div>
+                                                
+                                            );
+                                        } else {
+                                            return (
+                                                <div className="form-check" key={"check" + part.idx + "_radio_" + index2}>
+                                                    <input 
+                                                        className="form-check-input" 
+                                                        type="radio" 
+                                                        value={index2} 
+                                                        name={part.idx}
+                                                        checked={mpcFixState[index1] === index2}
+                                                        onChange={(event) => handleOnChange(event)}>
+                                                    </input>
+                                                    <label className="form-check-label">
+                                                        Instead, "{correction.split(',').join(' ')}" is true.
+                                                    </label>
+                                                </div>
+                                            );
+                                        }
                                     } else {
                                         return (<div key={"check_" + part.idx + "_radio_" + index2}></div>)
                                     }

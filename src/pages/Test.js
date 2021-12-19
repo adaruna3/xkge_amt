@@ -218,6 +218,7 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
                                     setMpcFixState(new Array(examples[currentExampleNum+1].parts.length).fill(-1));
                                     setCorrectState(false);
                                     setCurrentExampleNum(currentExampleNum+1);
+                                    setCurrentExample(examples[currentExampleNum+1]);
                                 } else if (currentExampleNum+1 < max_examples) {
                                     testData.push(mpcFixState);
                                     setTestData(testData);

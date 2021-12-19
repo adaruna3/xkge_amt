@@ -20,7 +20,9 @@ function App() {
       "verificationCode": Math.floor(100000 + Math.random() * 900000)
     }
   );
-  var [expId, setExpId] = useState(0);
+  const queryParams = new URLSearchParams(window.location.search);
+  var expId = queryParams.get('id');
+  // var [expId, setExpId] = useState(0);
   const maxTestExamples = 15
 
   useEffect(() => {
@@ -46,7 +48,8 @@ function App() {
 
   return (
     currentPage === 'Welcome' ? (
-      <Welcome setCurrentPage={(value) => setCurrentPage(value)} saveTurkId={(value) => setUserData({...userData, "turkId": value})} setExpId={(value) => setExpId(value-1)} maxExamples={maxTestExamples}/>
+      // <Welcome setCurrentPage={(value) => setCurrentPage(value)} saveTurkId={(value) => setUserData({...userData, "turkId": value})} setExpId={(value) => setExpId(value-1)} maxExamples={maxTestExamples}/>
+      <Welcome setCurrentPage={(value) => setCurrentPage(value)} saveTurkId={(value) => setUserData({...userData, "turkId": value})} maxExamples={maxTestExamples}/>
     ) : currentPage === 'Rules' ? (
       <Rules setCurrentPage={(value) => setCurrentPage(value)}/>
     ) : currentPage === 'Examples' ? (
