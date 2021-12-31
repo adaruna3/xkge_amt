@@ -1,59 +1,37 @@
 import React, {useState} from 'react';
-import examples from '../data/examples.json'
+import {format} from 'react-string-format';
+import examples from '../data/examples.json';
 
 
 
 function Examples({setCurrentPage, saveData}) {
-    const [prevExample, setPrevExample] = useState(-1)
-    const [currentExample, setCurrentExample] = useState(0)
-    const [currentAnswered, setCurrentAnswered] = useState(false)
-    const [testData, setTestData] = useState([])
-    const max_examples = 6
-
-    const [mpcState, setMpcState] = useState(
-        new Array(examples[currentExample].parts.length).fill(false)
-    );
-    const [mpcFixState, setMpcFixState] = useState(
-        new Array(examples[currentExample].parts.length).fill(-1)
-    );
-    const [correctState, setCorrectState] = useState(false);
-    
-    if (prevExample !== currentExample) {
-        setMpcState(new Array(examples[currentExample].parts.length).fill(false));
-        setMpcFixState(new Array(examples[currentExample].parts.length).fill(-1));
-        setCorrectState(false);
-        setPrevExample(currentExample);
-        setCurrentAnswered(false);
-    }
+    const [currentExampleNum, setCurrentExampleNum] = useState(0);
+    const [currentExamplePart, setCurrentExamplePart] = useState(0);
+    const [currentAnswered, setCurrentAnswered] = useState(false);
+    const [questionAnswer, setQuestionAnswer] = useState([]);
+    const [currentAnswer, setCurrentAnswer] = useState(null);
+    const [testData, setTestData] = useState([]);
+    const max_examples = 4;
 
     const validSubmit = () => {
-        const mpcEval = mpcState.map((item, mpcIndex) => {
-            if (item) {
-                if (mpcFixState[mpcIndex] === -1) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            } else {
-                return 0;
-            }
-        });
-        const mpcEvalRedux = mpcEval.every((val) => val !== -1) && mpcEval.some((val) => val === 1);
-        return mpcEvalRedux || correctState;
+        if (currentAnswer === null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     const evaluateSubmit = () => {
-        console.log("mpcState " + mpcState);
-        console.log("mpcFixState " + mpcFixState);
-        console.log("correctState " + correctState);
-        const mpcEval = mpcFixState.map((item, mpcIndex) => {
-            if (item === examples[currentExample].parts[mpcIndex].correct_id) {
-                return true;
-            } else {
-                return false;
-            }
-        });
-        return mpcEval.every((val) => val);
+        var mpcEval;
+        if (currentExamplePart < examples[currentExampleNum].parts.length) {
+            mpcEval = examples[currentExampleNum].parts[currentExamplePart].correct_id === currentAnswer;
+        } else {
+            const correctEval = examples[currentExampleNum].parts.map((part) =>
+                part.correct_id
+            );
+            mpcEval = (correctEval.every((val) => val === -1) && currentAnswer) || (!correctEval.every((val) => val === -1) && !currentAnswer);
+        }
+        return mpcEval;
     }
 
     var next_button;
@@ -61,78 +39,89 @@ function Examples({setCurrentPage, saveData}) {
         next_button = "Disabled. Complete your selection."
     } else if (!currentAnswered) {
         next_button = "Submit Answer"
-    } else if (currentExample+1 < max_examples) {
+    } else if (currentExampleNum+1 < max_examples) {
         next_button = "Next Example"
     } else {
         next_button = "Next Stage"
     }
-
-    const mpcHandleOnChange = (position) => {
-        if (!currentAnswered) {
-            if (correctState) {
-                setCorrectState(!correctState)
-            }
-            const updatedCheckedState = mpcState.map((item, index) =>
-                index === position ? !item : item
-            );
-            setMpcState(updatedCheckedState);
-            const updatedFixState = mpcFixState.map((item, index) =>
-                mpcState[index] ? item : -1
-            );
-            setMpcFixState(updatedFixState);
-        }
-    };
-
-    const correctHandleOnChange = () => {
-        if (!currentAnswered) {
-            setMpcState(new Array(examples[currentExample].parts.length).fill(false));
-            const updatedFixState = mpcFixState.map(() => -1);
-            setMpcFixState(updatedFixState);
-            setCorrectState(!correctState);
-        }
-    };
-
     
     const explain_str = () => {
-        const exp_parts = examples[currentExample].parts.map((part, index) => {
-            if (part.correct_id !== -1 && part.correct_id !== mpcFixState[index]) {
+        var rel2str = {
+            "HasEffect": "The act of {0} an object will make it {1}.",
+            "_HasEffect": "An object is {0} after {1} it.",
+            "InverseActionOf": "{0} an object is the opposite of {1} an object.",
+            "_InverseActionOf": "{0} an object is the opposite of {1} an object.",
+            "InverseStateOf": "An object being {0} is the opposite of being {1}.",
+            "_InverseStateOf": "An object being {0} is the opposite of being {1}.",
+            "LocInRoom": "{0} can often be found in {1}.",
+            "_LocInRoom": "{0} often can contain {1}.",
+            "ObjCanBe": "{0} can be {1}.",
+            "_ObjCanBe": "{0} can be {1}.",
+            "ObjInLoc": "{0} is often in {1}.",
+            "_ObjInLoc": "{0} often can contain {1}.",
+            "ObjInRoom": "{0} can often be found in {1}.",
+            "_ObjInRoom": "{0} often can contain {1}.",
+            "ObjOnLoc": "{0} is often in {1}.",
+            "_ObjOnLoc": "{0} often can contain {1}.",
+            "ObjUsedTo": "{0} is used to {1}.",
+            "_ObjUsedTo": "{0} can be done using {1}.",
+            "ObjhasState": "{0} can be {1}.",
+            "_ObjhasState": "{0} can be {1}.",
+            "OperatesOn": "{0} is usually used on {1}.",
+            "_OperatesOn": "{0} is usually used on {1}.",
+        };
+        if (currentExamplePart < examples[currentExampleNum].parts.length) {
+            if (examples[currentExampleNum].parts[currentExamplePart].correct_id === -1) {
+                let str1 = examples[currentExampleNum].parts[currentExamplePart].str;
                 return (
-                    <div className="form-check" key={"exp_"+part.idx}>
+                    <div className="form-check">
                         <li className="form-check-label">
-                            {"Part " + (parseInt(part.idx)+1) + ", \"" + part.str.split(',').join(' ') + "\", is False. Instead \"" + part.corrections[part.correct_id].split(',').join(' ') + "\" is True."}
+                            "{str1.charAt(0).toUpperCase() + str1.slice(1)}" is most correct.
                         </li>
                     </div>
                 );
             } else {
-                return (false);
+                let head = examples[currentExampleNum].parts[currentExamplePart].corrections[examples[currentExampleNum].parts[currentExamplePart].correct_id][0]
+                let rel = examples[currentExampleNum].parts[currentExamplePart].corrections[examples[currentExampleNum].parts[currentExamplePart].correct_id][1]
+                let tail = examples[currentExampleNum].parts[currentExamplePart].corrections[examples[currentExampleNum].parts[currentExamplePart].correct_id][2]
+                let str1 = format(rel2str[rel], head, tail);
+                return (
+                    <div className="form-check">
+                        <li className="form-check-label">
+                            "{str1.charAt(0).toUpperCase() + str1.slice(1)}", is most correct.
+                        </li>
+                    </div>
+                );
             }
-        })
-        if (exp_parts.every((val) => val === false)) {
-            return (
-                <div className="form-check" key="exp">
-                    <label className="form-check-label">
-                        The fist answer is correct because the VA's guess and each part of the reasoning are correct.
-                    </label>
-                </div>
-            );
         } else {
-            return exp_parts;
+            const correctEval = examples[currentExampleNum].parts.map((part) =>
+                part.correct_id
+            );
+            if (correctEval.every((val) => val === -1)) {
+                let str1 = examples[currentExampleNum].str
+                return (
+                    <div className="form-check">
+                        <li className="form-check-label">
+                            "{str1.charAt(0).toUpperCase() + str1.slice(1)}" is True.
+                        </li>
+                    </div>
+                );
+            } else {
+                let str1 = examples[currentExampleNum].str
+                return (
+                    <div className="form-check">
+                        <li className="form-check-label">
+                        "{str1.charAt(0).toUpperCase() + str1.slice(1)}" is False.
+                        </li>
+                    </div>
+                );
+            }
         }
     }
 
     const handleOnChange = (event) => {
         if (!currentAnswered) {
-            if (mpcState[parseInt(event.target.name)]) {
-                const updatedFixState = mpcFixState.map((item, index) =>
-                    index === parseInt(event.target.name) ? parseInt(event.target.value) : item
-                );
-                setMpcFixState(updatedFixState);
-            } else {
-                const updatedFixState = mpcFixState.map((item, index) =>
-                    index === parseInt(event.target.name) ? -1 : item
-                );
-                setMpcFixState(updatedFixState);
-            }
+            setCurrentAnswer(parseInt(event.target.value));
         }
     };
 
@@ -175,122 +164,387 @@ function Examples({setCurrentPage, saveData}) {
         }
     }
 
-    const and_or = (part_idx, parts_length) => {
-        if (part_idx + 1 < parts_length){
-            return (<div>and/or</div>)
+    const formatReasoning = (exampleNum, partNum) => {
+        const reasoning = examples[exampleNum].parts.map((part, index) => {
+            if (index === partNum) {
+                return (<b>{part.str.charAt(0).toUpperCase() + part.str.slice(1) + " "}</b>);
+            } else {
+                return (part.str.charAt(0).toUpperCase() + part.str.slice(1) + " ");
+            }
+        });
+        var guess;
+        if (partNum === examples[exampleNum].parts.length) {
+            guess = <b>{examples[exampleNum].str}</b>;
         } else {
-            return (<div></div>)
+            guess = examples[exampleNum].str;
+        }
+        return (
+            <span>
+                {reasoning} Therefore, {guess}
+            </span>
+        );
+    }
+
+    const formatMPC = (exampleNum, partNum) => {
+        if (partNum < examples[exampleNum].parts.length) {
+            return (
+                examples[exampleNum].parts[partNum].corrections.map((correction, index2) => {
+                    if (index2 === 0) {
+                        let head = examples[exampleNum].parts[partNum].str_list[0];
+                        let rel = examples[exampleNum].parts[partNum].str_list[1];
+                        let tail = examples[exampleNum].parts[partNum].str_list[2];
+                        let rbb_rel2str = {
+                            "HasEffect": <span>"The act of <span style={{color:"red"}}>{head}</span> an object<span style={{color:"blue"}}> will make it {tail}</span>."</span>,
+                            "_HasEffect": <span>"An object is <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> after {tail}</span> it."</span>,
+                            "InverseActionOf": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> an object is the opposite of {tail}</span> an object."</span>,
+                            "_InverseActionOf": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> an object is the opposite of {tail}</span> an object."</span>,
+                            "InverseStateOf": <span>"An object being <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> is the opposite of being {tail}</span>."</span>,
+                            "_InverseStateOf": <span>"An object being <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> is the opposite of being {tail}</span>."</span>,
+                            "LocInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can often be found in {tail}</span>."</span>,
+                            "_LocInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjCanBe": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "_ObjCanBe": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "ObjInLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is often in {tail}</span>."</span>,
+                            "_ObjInLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can often be found in {tail}</span>."</span>,
+                            "_ObjInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjOnLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is often in {tail}</span>."</span>,
+                            "_ObjOnLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjUsedTo": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is used to {tail}</span>."</span>,
+                            "_ObjUsedTo": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be done using {tail}</span>."</span>,
+                            "ObjhasState": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "_ObjhasState": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "OperatesOn": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is usually used on {tail}</span>."</span>,
+                            "_OperatesOn": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is usually used on {tail}</span>."</span>,
+                        };
+                        let bbr_rel2str = {
+                            "HasEffect": <span>"The act of <span style={{color:"blue"}}>{head} an object will make it </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_HasEffect": <span>"An object is <span style={{color:"blue"}}>{head} after </span><span style={{color:"red"}}>{tail}</span> it."</span>,
+                            "InverseActionOf": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} an object is the opposite of </span><span style={{color:"red"}}>{tail}</span> an object."</span>,
+                            "_InverseActionOf": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} an object is the opposite of </span><span style={{color:"red"}}>{tail}</span> an object."</span>,
+                            "InverseStateOf": <span>"An object being <span style={{color:"blue"}}>{head} is the opposite of being </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_InverseStateOf": <span>"An object being <span style={{color:"blue"}}>{head} is the opposite of being </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "LocInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can often be found in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_LocInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjCanBe": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjCanBe": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjInLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is often in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjInLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can often be found in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjOnLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is often in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjOnLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjUsedTo": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is used to </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjUsedTo": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be done using </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjhasState": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjhasState": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "OperatesOn": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is usually used on </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_OperatesOn": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is usually used on </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                        };
+                        var part_str;
+                        let color_redux = (prev, curr) => prev + curr;
+                        if (examples[exampleNum].parts[partNum].colors.reduce(color_redux) === "rbb") {
+                            part_str = rbb_rel2str[rel];
+                        } else {
+                            part_str = bbr_rel2str[rel];
+                        }
+                        head = correction[0];
+                        rel = correction[1];
+                        tail = correction[2];
+                        rbb_rel2str = {
+                            "HasEffect": <span>"The act of <span styles={{color:"red"}}>{head}</span> an object<span style={{color:"blue"}}> will make it {tail}</span>."</span>,
+                            "_HasEffect": <span>"An object is <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> after {tail}</span> it."</span>,
+                            "InverseActionOf": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> an object is the opposite of {tail}</span> an object."</span>,
+                            "_InverseActionOf": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> an object is the opposite of {tail}</span> an object."</span>,
+                            "InverseStateOf": <span>"An object being <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> is the opposite of being {tail}</span>."</span>,
+                            "_InverseStateOf": <span>"An object being <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> is the opposite of being {tail}</span>."</span>,
+                            "LocInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can often be found in {tail}</span>."</span>,
+                            "_LocInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjCanBe": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "_ObjCanBe": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "ObjInLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is often in {tail}</span>."</span>,
+                            "_ObjInLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can often be found in {tail}</span>."</span>,
+                            "_ObjInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjOnLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is often in {tail}</span>."</span>,
+                            "_ObjOnLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjUsedTo": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is used to {tail}</span>."</span>,
+                            "_ObjUsedTo": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be done using {tail}</span>."</span>,
+                            "ObjhasState": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "_ObjhasState": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "OperatesOn": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is usually used on {tail}</span>."</span>,
+                            "_OperatesOn": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is usually used on {tail}</span>."</span>,
+                        };
+                        bbr_rel2str = {
+                            "HasEffect": <span>"The act of <span style={{color:"blue"}}>{head} an object will make it </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_HasEffect": <span>"An object is <span style={{color:"blue"}}>{head} after </span><span style={{color:"red"}}>{tail}</span> it."</span>,
+                            "InverseActionOf": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} an object is the opposite of </span><span style={{color:"red"}}>{tail}</span> an object."</span>,
+                            "_InverseActionOf": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} an object is the opposite of </span><span style={{color:"red"}}>{tail}</span> an object."</span>,
+                            "InverseStateOf": <span>"An object being <span style={{color:"blue"}}>{head} is the opposite of being </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_InverseStateOf": <span>"An object being <span style={{color:"blue"}}>{head} is the opposite of being </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "LocInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can often be found in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_LocInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjCanBe": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjCanBe": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjInLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is often in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjInLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can often be found in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjOnLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is often in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjOnLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjUsedTo": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is used to </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjUsedTo": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be done using </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjhasState": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjhasState": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "OperatesOn": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is usually used on </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_OperatesOn": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is usually used on </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                        };
+                        var correction_str;
+                        if (examples[exampleNum].parts[partNum].colors.reduce(color_redux) === "rbb") {
+                            correction_str = rbb_rel2str[rel];
+                        } else {
+                            correction_str = bbr_rel2str[rel];
+                        }
+                        return (
+                            <div className="form-check" key={"radio_" + index2}>
+                                <input 
+                                    className="form-check-input" 
+                                    type="radio" 
+                                    value={-1} 
+                                    name={exampleNum + "_" + partNum} 
+                                    checked={currentAnswer === -1}
+                                    onChange={(event) => handleOnChange(event)}>
+                                </input>
+                                <label className="form-check-label">
+                                    {part_str}
+                                </label>
+                                <br/>
+                                <input 
+                                    className="form-check-input" 
+                                    type="radio" 
+                                    value={index2}
+                                    name={exampleNum + "_" + partNum} 
+                                    checked={currentAnswer === index2}
+                                    onChange={(event) => handleOnChange(event)}>
+                                </input>
+                                <label className="form-check-label">
+                                    {correction_str}
+                                </label>
+                            </div>
+                        );
+                    } else if (index2+1 === examples[exampleNum].parts[partNum].corrections.length) {
+                        let head = correction[0];
+                        let rel = correction[1];
+                        let tail = correction[2];
+                        let rbb_rel2str = {
+                            "HasEffect": <span>"The act of <span style={{color:"red"}}>{head}</span> an object<span style={{color:"blue"}}> will make it {tail}</span>."</span>,
+                            "_HasEffect": <span>"An object is <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> after {tail}</span> it."</span>,
+                            "InverseActionOf": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> an object is the opposite of {tail}</span> an object."</span>,
+                            "_InverseActionOf": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> an object is the opposite of {tail}</span> an object."</span>,
+                            "InverseStateOf": <span>"An object being <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> is the opposite of being {tail}</span>."</span>,
+                            "_InverseStateOf": <span>"An object being <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> is the opposite of being {tail}</span>."</span>,
+                            "LocInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can often be found in {tail}</span>."</span>,
+                            "_LocInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjCanBe": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "_ObjCanBe": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "ObjInLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is often in {tail}</span>."</span>,
+                            "_ObjInLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can often be found in {tail}</span>."</span>,
+                            "_ObjInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjOnLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is often in {tail}</span>."</span>,
+                            "_ObjOnLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjUsedTo": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is used to {tail}</span>."</span>,
+                            "_ObjUsedTo": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be done using {tail}</span>."</span>,
+                            "ObjhasState": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "_ObjhasState": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "OperatesOn": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is usually used on {tail}</span>."</span>,
+                            "_OperatesOn": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is usually used on {tail}</span>."</span>,
+                        };
+                        let bbr_rel2str = {
+                            "HasEffect": <span>"The act of <span style={{color:"blue"}}>{head} an object will make it </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_HasEffect": <span>"An object is <span style={{color:"blue"}}>{head} after </span><span style={{color:"red"}}>{tail}</span> it."</span>,
+                            "InverseActionOf": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} an object is the opposite of </span><span style={{color:"red"}}>{tail}</span> an object."</span>,
+                            "_InverseActionOf": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} an object is the opposite of </span><span style={{color:"red"}}>{tail}</span> an object."</span>,
+                            "InverseStateOf": <span>"An object being <span style={{color:"blue"}}>{head} is the opposite of being </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_InverseStateOf": <span>"An object being <span style={{color:"blue"}}>{head} is the opposite of being </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "LocInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can often be found in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_LocInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjCanBe": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjCanBe": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjInLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is often in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjInLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can often be found in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjOnLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is often in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjOnLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjUsedTo": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is used to </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjUsedTo": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be done using </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjhasState": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjhasState": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "OperatesOn": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is usually used on </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_OperatesOn": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is usually used on </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                        };
+                        let correction_str;
+                        let color_redux = (prev, curr) => prev + curr;
+                        if (examples[exampleNum].parts[partNum].colors.reduce(color_redux) === "rbb") {
+                            correction_str = rbb_rel2str[rel];
+                        } else {
+                            correction_str = bbr_rel2str[rel];
+                        }
+                        return (
+                            <div className="form-check" key={"radio_" + index2}>
+                                <input 
+                                    className="form-check-input" 
+                                    type="radio" 
+                                    value={index2}
+                                    name={exampleNum + "_" + partNum} 
+                                    checked={currentAnswer === index2}
+                                    onChange={(event) => handleOnChange(event)}>
+                                </input>
+                                <label className="form-check-label">
+                                    {correction_str}
+                                </label>
+                                <br/>
+                                <input 
+                                    className="form-check-input" 
+                                    type="radio" 
+                                    value={3} 
+                                    name={exampleNum + "_" + partNum} 
+                                    checked={currentAnswer === 3}
+                                    onChange={(event) => handleOnChange(event)}>
+                                </input>
+                                <label className="form-check-label">
+                                    None of the above are True.
+                                </label>
+                            </div>
+                        );
+                    } else {
+                        let head = correction[0];
+                        let rel = correction[1];
+                        let tail = correction[2];
+                        let rbb_rel2str = {
+                            "HasEffect": <span>"The act of <span style={{color:"red"}}>{head}</span> an object<span style={{color:"blue"}}> will make it {tail}</span>."</span>,
+                            "_HasEffect": <span>"An object is <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> after {tail}</span> it."</span>,
+                            "InverseActionOf": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> an object is the opposite of {tail}</span> an object."</span>,
+                            "_InverseActionOf": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> an object is the opposite of {tail}</span> an object."</span>,
+                            "InverseStateOf": <span>"An object being <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> is the opposite of being {tail}</span>."</span>,
+                            "_InverseStateOf": <span>"An object being <span style={{color:"red"}}>{head}</span><span style={{color:"blue"}}> is the opposite of being {tail}</span>."</span>,
+                            "LocInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can often be found in {tail}</span>."</span>,
+                            "_LocInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjCanBe": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "_ObjCanBe": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "ObjInLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is often in {tail}</span>."</span>,
+                            "_ObjInLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can often be found in {tail}</span>."</span>,
+                            "_ObjInRoom": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjOnLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is often in {tail}</span>."</span>,
+                            "_ObjOnLoc": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> often can contain {tail}</span>."</span>,
+                            "ObjUsedTo": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is used to {tail}</span>."</span>,
+                            "_ObjUsedTo": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be done using {tail}</span>."</span>,
+                            "ObjhasState": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "_ObjhasState": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> can be {tail}</span>."</span>,
+                            "OperatesOn": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is usually used on {tail}</span>."</span>,
+                            "_OperatesOn": <span>"<span style={{color:"red"}}>{head.charAt(0).toUpperCase() + head.slice(1)}</span><span style={{color:"blue"}}> is usually used on {tail}</span>."</span>,
+                        };
+                        let bbr_rel2str = {
+                            "HasEffect": <span>"The act of <span style={{color:"blue"}}>{head} an object will make it </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_HasEffect": <span>"An object is <span style={{color:"blue"}}>{head} after </span><span style={{color:"red"}}>{tail}</span> it."</span>,
+                            "InverseActionOf": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} an object is the opposite of </span><span style={{color:"red"}}>{tail}</span> an object."</span>,
+                            "_InverseActionOf": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} an object is the opposite of </span><span style={{color:"red"}}>{tail}</span> an object."</span>,
+                            "InverseStateOf": <span>"An object being <span style={{color:"blue"}}>{head} is the opposite of being </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_InverseStateOf": <span>"An object being <span style={{color:"blue"}}>{head} is the opposite of being </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "LocInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can often be found in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_LocInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjCanBe": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjCanBe": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjInLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is often in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjInLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can often be found in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjInRoom": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjOnLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is often in </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjOnLoc": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} often can contain </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjUsedTo": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is used to </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjUsedTo": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be done using </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "ObjhasState": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_ObjhasState": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} can be </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "OperatesOn": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is usually used on </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                            "_OperatesOn": <span>"<span style={{color:"blue"}}>{head.charAt(0).toUpperCase() + head.slice(1)} is usually used on </span><span style={{color:"red"}}>{tail}</span>."</span>,
+                        };
+                        let correction_str;
+                        let color_redux = (prev, curr) => prev + curr;
+                        if (examples[exampleNum].parts[partNum].colors.reduce(color_redux) === "rbb") {
+                            correction_str = rbb_rel2str[rel];
+                        } else {
+                            correction_str = bbr_rel2str[rel];
+                        }
+                        return (
+                            <div className="form-check" key={"radio_" + index2}>
+                                <input 
+                                    className="form-check-input" 
+                                    type="radio" 
+                                    value={index2} 
+                                    name={exampleNum + "_" + partNum} 
+                                    checked={currentAnswer === index2}
+                                    onChange={(event) => handleOnChange(event)}>
+                                </input>
+                                <label className="form-check-label">
+                                    {correction_str}
+                                </label>
+                            </div>
+                        );
+                    }
+                })
+            );
+        } else {
+            return (
+                <div className="form-check" key={"radio"}>
+                    <input 
+                        className="form-check-input" 
+                        type="radio" 
+                        value={1} 
+                        name={exampleNum + "_" + partNum} 
+                        checked={currentAnswer === 1}
+                        onChange={(event) => handleOnChange(event)}>
+                    </input>
+                    <label className="form-check-label">
+                        "{examples[exampleNum].str.charAt(0).toUpperCase() + examples[exampleNum].str.slice(1)}" is <span style={{color:"red"}}>True</span>.
+                    </label>
+                    <br/>
+                    <input 
+                        className="form-check-input" 
+                        type="radio" 
+                        value={0} 
+                        name={exampleNum + "_" + partNum} 
+                        checked={currentAnswer === 0}
+                        onChange={(event) => handleOnChange(event)}>
+                    </input>
+                    <label className="form-check-label">
+                    
+                        "{examples[exampleNum].str.charAt(0).toUpperCase() + examples[exampleNum].str.slice(1)}" is <span style={{color:"red"}}>False</span>.
+                    </label>
+                </div>
+            );
         }
     }
     
     return (
         <div className="container-rules">
             <div className="container">
-                <div className="card mb-5" style={{backgroundColor:'#e6f7ff'}}>
+                <div className="card mb-5" style={{backgroundColor:'#F0F0F0'}}>
                     <div className="card-body">
-                        <h5 className="card-title">Displaying Example {currentExample+1} out of {max_examples} </h5>
+                        <h5 className="card-title">Displaying Example {currentExampleNum+1} out of {max_examples} </h5>
                         <div className="card-text">
-                            Evaluate the VA’s <b>guess</b> and <b>reasoning</b> below. After submitting your answer, you will be provided the correct answer with an explanation. Note that <b>more than one fact may be wrong</b>.<br/><br/>
-                            
-                            The VA’s <b>guess</b>:<br/>
-                            <div className="form-check">
-                                <label className="form-check-label">
-                                    "{examples[currentExample].triple}"
-                                </label>
+                            <br/>
+                            <div className="row">
+                                <div className="col-3 text-right">The robot’s reasoning:</div>
+                                <div className="col-9">
+                                    {formatReasoning(currentExampleNum, currentExamplePart)}<br/><br/>
+                                </div>
                             </div>
-                            The VA's <b>reasoning</b>:<br/> {
-                                examples[currentExample].parts.map((part, index) => {
-                                    return (<div className="form-check" key={"justi_"+part.idx}>
-                                        <label className="form-check-label">
-                                        Part {index+1} of the VA's reasoning is, "{part.str.split(',').join(' ')}"
-                                        </label>
-                                    </div>)
-                                })
-                            }
+                             
+                            Evaluate the <b>bold</b> part of the robot's reasoning by selecting the <i>most correct</i> choice below.<br/>
                         </div><hr/>
-                        <div className="form-check">
-                            <input 
-                                className="form-check-input" 
-                                type="checkbox" 
-                                value="" 
-                                id={examples[currentExample].parts.length} 
-                                checked={correctState}
-                                onChange={() => correctHandleOnChange()}>
-                            </input>
-                            <label className="form-check-label">
-                                The VA's guess is <b>correct</b>.<br/><br/>
-                            </label>
-                        </div>
-                        <div className="form-check">
-                            The VA's guess is <b>wrong</b> because...
-                        </div>
-                        {examples[currentExample].parts.map((part, index1) => (
-                            <div className="form-check" key={"check_" + part.idx}>
-                                <input 
-                                    className="form-check-input" 
-                                    type="checkbox" 
-                                    value="" 
-                                    id={part.idx} 
-                                    checked={mpcState[index1]}
-                                    onChange={() => mpcHandleOnChange(index1)}>
-                                </input>
-                                <label className="form-check-label">
-                                    <b>Part {parseInt(part.idx)+1}</b> of the VA's reasoning is <b>wrong</b>,  "{part.str.split(',').join(' ')}" is false.
-                                </label>
-                                {part.corrections.map((correction, index2) => {
-                                    if (mpcState[part.idx]) {
-                                        if (index2+1 === part.corrections.length) {
-                                            return (
-                                                <div className="form-check" key={"check" + part.idx + "_radio_" + index2}>
-                                                    <input 
-                                                        className="form-check-input" 
-                                                        type="radio" 
-                                                        value={index2} 
-                                                        name={part.idx}
-                                                        checked={mpcFixState[index1] === index2}
-                                                        onChange={(event) => handleOnChange(event)}>
-                                                    </input>
-                                                    <label className="form-check-label">
-                                                        Instead, "{correction.split(',').join(' ')}" is true.
-                                                    </label>
-                                                    <br/>
-                                                    <input 
-                                                        className="form-check-input" 
-                                                        type="radio" 
-                                                        value={3} 
-                                                        name={part.idx} 
-                                                        onChange={(event) => handleOnChange(event)}>
-                                                    </input>
-                                                    <label className="form-check-label">
-                                                        None of the above are true.
-                                                    </label>
-                                                </div>
-                                                
-                                            );
-                                        } else {
-                                            return (
-                                                <div className="form-check" key={"check" + part.idx + "_radio_" + index2}>
-                                                    <input 
-                                                        className="form-check-input" 
-                                                        type="radio" 
-                                                        value={index2} 
-                                                        name={part.idx}
-                                                        checked={mpcFixState[index1] === index2}
-                                                        onChange={(event) => handleOnChange(event)}>
-                                                    </input>
-                                                    <label className="form-check-label">
-                                                        Instead, "{correction.split(',').join(' ')}" is true.
-                                                    </label>
-                                                </div>
-                                            );
-                                        }
-                                    } else {
-                                        return (<div key={"check_" + part.idx + "_radio_" + index2}></div>)
-                                    }
-                                })}
-                                {and_or(index1, examples[currentExample].parts.length)}
-                            </div>
-                        ))}
+                        {formatMPC(currentExampleNum, currentExamplePart)}
                         <hr></hr><p><br></br></p>
                         {explanation()}
                         <button 
@@ -300,14 +554,23 @@ function Examples({setCurrentPage, saveData}) {
                             onClick={ () => {
                                 if (!currentAnswered) {
                                     setCurrentAnswered(!currentAnswered);
-                                    testData.push(mpcFixState);
+                                    questionAnswer.push(currentAnswer)
+                                    setQuestionAnswer(questionAnswer);
+                                } else if (currentExamplePart+1 < examples[currentExampleNum].parts.length+1) {
+                                    setCurrentExamplePart(currentExamplePart+1);
+                                    setCurrentAnswer(null);
+                                    setCurrentAnswered(!currentAnswered);
+                                } else if (currentExampleNum+1 < max_examples) {
+                                    setCurrentExamplePart(0);
+                                    setCurrentExampleNum(currentExampleNum+1);
+                                    setCurrentAnswer(null);
+                                    setCurrentAnswered(!currentAnswered);
+                                    testData.push(questionAnswer);
                                     setTestData(testData);
-                                } else if (currentExample+1 < max_examples) {
-                                    setMpcState(new Array(examples[currentExample+1].parts.length).fill(false));
-                                    setMpcFixState(new Array(examples[currentExample+1].parts.length).fill(-1));
-                                    setCorrectState(false);
-                                    setCurrentExample(currentExample+1);
-                                } else {
+                                    setQuestionAnswer([]);
+                                }else {
+                                    testData.push(questionAnswer);
+                                    setTestData(testData);
                                     saveData(testData);
                                     setCurrentPage("PreTest")
                                 }
