@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Rules({setCurrentPage}) {
+function Rules2({setCurrentPage}) {
     return (
         <div className="container-rules">
             <div className="container">
@@ -33,4 +33,4 @@ function Rules({setCurrentPage}) {
     )
 }
 
-export default Rules
+export default Rules2

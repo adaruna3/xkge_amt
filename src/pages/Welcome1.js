@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import examples from '../data/explanations_decision_tree_local3_best.json'
+import examples from '../data/explanations_decision_tree_local3_best_clean_filtered.json'
 // import { Dropdown, DropdownButton } from 'react-bootstrap';
 
 function Welcome({setCurrentPage, saveTurkId, maxExamples}) {
@@ -38,16 +38,15 @@ function Welcome({setCurrentPage, saveTurkId, maxExamples}) {
                 <div className="card-body">
                     <h5 className="card-title">Introduction</h5>
                     <p className="card-text">
-                    A robot has been tasked with guessing whether common-sense facts are true ("A dishwasher often can contain a coffee pot.") or false ("A dishwasher often can contain a bedroom."). 
-                    Along with guesses, the robot must provide reasoning for each guess.
+                    A robot has been tasked with providing responses to <b>"why" questions</b>. 
+                    For example, "Why did you move to the fridge?" or "Why do you think a fridge can contian an apple?".
                     <br/><br/>
-                    <b>Your task is to improve the robot's knowledge by fixing incorrect parts of the robot's reasoning and guesses.</b>
+                    <b>Your task is to improve the robot's responses by selecting the best response to a "why" question.</b>
                     <br/><br/>
-                    This HIT consists of 3 stages. Instructions will be provided in each stage.
+                    This HIT consists of 2 stages. Instructions will be provided in each stage.
                     </p>
                     <ul>
-                        <li>Practice Stage</li>
-                        <li>Test Stage</li>
+                        <li>Robot Interaction Stage</li>
                         <li>Exit Questionnaire</li>
                     </ul>
                     <hr/>  

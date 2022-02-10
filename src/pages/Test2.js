@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
-import examples from '../data/explanations_decision_tree_local3_best.json'
+import examples from '../data/explanations_decision_tree_local3_best_clean_filtered.json'
 import golden from '../data/examples.json'
 
 
 
-function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
+function Test2({setCurrentPage, saveData, maxExamples, firstExample}) {
     const [currentExampleNum, setCurrentExampleNum] = useState(firstExample);
     const [currentExamplePart, setCurrentExamplePart] = useState(0);
     const [currentExample, setCurrentExample] = useState(examples[currentExampleNum]);
     const [questionAnswer, setQuestionAnswer] = useState([]);
     const [currentAnswer, setCurrentAnswer] = useState(null);
     const [testData, setTestData] = useState([]);
+    const [goldenExample, setGoldenExample] = useState(false);
 
     var max_examples = firstExample + maxExamples + 1;
     if (firstExample + maxExamples > examples.length){
@@ -425,7 +426,14 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
                             disabled={!validSubmit()} 
                             className="btn btn-outline-primary d-block mx-auto"  
                             onClick={ () => {
-                                if (currentExamplePart+1 < examples[currentExampleNum].parts.length+1) {
+                                if (currentExamplePart+1 < examples[currentExampleNum].parts.length+1 & !goldenExample) {
+                                    // save data
+                                    questionAnswer.push(currentAnswer);
+                                    setQuestionAnswer(questionAnswer);
+                                    // move to next and reset
+                                    setCurrentExamplePart(currentExamplePart+1);
+                                    setCurrentAnswer(null);
+                                } else if (currentExamplePart+1 < golden[1].parts.length+1 & goldenExample) {
                                     // save data
                                     questionAnswer.push(currentAnswer);
                                     setQuestionAnswer(questionAnswer);
@@ -456,6 +464,7 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
                                     setCurrentExample(golden[1]);
                                     setCurrentAnswer(null);
                                     setQuestionAnswer([]);
+                                    setGoldenExample(true);
                                 } else {
                                     // save data
                                     questionAnswer.push(currentAnswer);
@@ -476,4 +485,4 @@ function Test({setCurrentPage, saveData, maxExamples, firstExample}) {
     )
 }
 
-export default Test
+export default Test2

@@ -1,0 +1,477 @@
+[
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that a washing sponge is used to sponge, a faucet can be sponged, a faucet is usually used on a brush, and a brush is often in a sink. Therefore, it is possible that a washing sponge is often in a sink."
+            ],
+            [
+                "causal",
+                "I will move from the table to the sink to later grab the washing sponge from the sink."
+            ],
+            [
+                "history",
+                "I have observed that a glass liquor bottle, a tooth brush, and a tooth paste tube are often in a sink. I have also observed that a washing sponge is often in a cabinet and a dishwasher."
+            ]
+        ],
+        "video": "videos/move1.mp4",
+        "plan": [
+            [
+                "Move to the sink",
+                "Interrupted Action"
+            ],
+            [
+                "Observe washing sponge at sink",
+                "Next Action"
+            ],
+            [
+                "Grab the washing sponge",
+                "Future Action"
+            ]
+        ],
+        "why_q1": "Why do you think a washing sponge is often in a sink?",
+        "why_q2": "Why will you move to the sink?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that a washing sponge is often in a cabinet, a cabinet often can contain a cloth, and a cloth is used to sponge. Therefore, it is possible that a washing sponge is used to sponge."
+            ],
+            [
+                "causal",
+                "I will take the washing sponge to later be able to sponge the table with the washing sponge."
+            ],
+            [
+                "history",
+                "I have observed that a dish towel, a kitchen towel, and a cloth are used to sponge."
+            ]
+        ],
+        "video": "videos/grab_sponge.mp4",
+        "plan": [
+            [
+                "Grab the washing sponge",
+                "Interrupted Action"
+            ],
+            [
+                "Move to the kitchen table",
+                "Next Action"
+            ],
+            [
+                "Sponge the kitchen table with the washing sponge",
+                "Future Action"
+            ]
+        ],
+        "why_q1": "Why do you think a washing sponge is used to sponge?",
+        "why_q2": "Why will you grab the washing sponge?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that scrubbing can be done using a scouring pad, a scouring pad can be dirty, and an object being dirty is the opposite of being clean. Therefore, it is possible that the act of scrubbing an object will make it clean."
+            ],
+            [
+                "causal",
+                "I will scrub the table to fulfill the goal of the table being clean."
+            ],
+            [
+                "history",
+                "I have observed that the act of vacuuming, sweeping, and sponging an object will make it clean."
+            ]
+        ],
+        "video": "videos/clean_scrubber.mp4",
+        "plan": [
+            [
+                "Scrub the kitchen table with the scrubber",
+                "Interrupted Action"
+            ],
+            [
+                "Observe kitchen table clean",
+                "Next Action"
+            ]
+        ],
+        "why_q1": "Why do you think the act of scrubbing an object will make it clean?",
+        "why_q2": "Why will you scrub the kitchen table with the scrubber?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that a scrubber can be washed, washing can be done using a faucet, a brush is usually used on a faucet, and a brush is often in a sink. Therefore, it is possible that a scrubber is often in a sink."
+            ],
+            [
+                "causal",
+                "I will move from the table to the sink to later grab the scrubber from the sink."
+            ],
+            [
+                "history",
+                "I have observed that a brush, a scouring pad, and a multicleaner bottle are often in a sink."
+            ]
+        ],
+        "video": "videos/move2.mp4",
+        "plan": [
+            [
+                "Move to the sink",
+                "Interrupted Action"
+            ],
+            [
+                "Observe scrubber at sink",
+                "Next Action"
+            ],
+            [
+                "Grab the scrubber",
+                "Future Action"
+            ]
+        ],
+        "why_q1": "Why do you think a scrubber is often in a sink?",
+        "why_q2": "Why will you move to the sink?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that a cleaning rag is often in a cabinet, a cabinet often can contain a feather duster, and a feather duster is often in a kitchen counter. Therefore, it is possible that a cleaning rag is often in a kitchen counter."
+            ],
+            [
+                "causal",
+                "I will move from the table to the kitchen counter to later grab the cleaning rag from the kitchen counter."
+            ],
+            [
+                "history",
+                "I have observed that a chicken breast, a cracker, and a bag of potato chips are often in a kitchen counter. I have also observed that a cleaning rag is often in and a bathroom counter."
+            ]
+        ],
+        "video": "videos/move3.mp4",
+        "plan": [
+            [
+                "Move to the kitchen counter",
+                "Interrupted Action"
+            ],
+            [
+                "Observe cleaning rag at kitchen counter",
+                "Next Action"
+            ],
+            [
+                "Grab the cleaning rag",
+                "Future Action"
+            ]
+        ],
+        "why_q1": "Why do you think a cleaning rag is often in a kitchen counter?",
+        "why_q2": "Why will you move to the kitchen counter?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that a scrubber is often in a cabinet, a cabinet often can contain a brush, and a brush is used to scrub. Therefore, it is possible that a scrubber is used to scrub."
+            ],
+            [
+                "causal",
+                "I will take the scrubber to later be able to scrub the table with the scrubber."
+            ],
+            [
+                "history",
+                "I have observed that a bottle brush, a scouring pad, and a steel wool are used to scrub."
+            ]
+        ],
+        "video": "videos/grab_scrubber.mp4",
+        "plan": [
+            [
+                "Grab the scrubber",
+                "Interrupted Action"
+            ],
+            [
+                "Move to the kitchen table",
+                "Next Action"
+            ],
+            [
+                "Scrub the kitchen table with the scrubber",
+                "Future Action"
+            ]
+        ],
+        "why_q1": "Why do you think a scrubber is used to scrub?",
+        "why_q2": "Why will you grab the scrubber?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that a feather duster is often in a cabinet, a cabinet often can contain a wash cloth, and a wash cloth is used to dust. Therefore, it is possible that a feather duster is used to dust."
+            ],
+            [
+                "causal",
+                "I will take the feather duster to later be able to dust the table with the feather duster."
+            ],
+            [
+                "history",
+                "I have observed that a cloth, a towel, and a duster are used to dust."
+            ]
+        ],
+        "video": "videos/grab_featherduster.mp4",
+        "plan": [
+            [
+                "Grab the feather duster",
+                "Interrupted Action"
+            ],
+            [
+                "Move to the kitchen table",
+                "Next Action"
+            ],
+            [
+                "Dust the kitchen table with the feather duster",
+                "Future Action"
+            ]
+        ],
+        "why_q1": "Why do you think a feather duster is used to dust?",
+        "why_q2": "Why will you grab the feather duster?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that a disinfectant wipe is often in a cabinet, a cabinet often can contain a detergent container, and a detergent container is used to disinfect. Therefore, it is possible that a disinfectant wipe is used to disinfect."
+            ],
+            [
+                "causal",
+                "I will take the disinfectant wipe to later be able to disinfect the table with the disinfectant wipe."
+            ],
+            [
+                "history",
+                "I have observed that a bottle of dishwashing liquid, a bottle of bleach, and a detergent container are used to disinfect. I have also observed that a disinfectant wipe is used to and wipe."
+            ]
+        ],
+        "video": "videos/grab_duster.mp4",
+        "plan": [
+            [
+                "Grab the disinfectant wipe",
+                "Interrupted Action"
+            ],
+            [
+                "Move to the kitchen table",
+                "Next Action"
+            ],
+            [
+                "Disinfect the kitchen table with the disinfectant wipe",
+                "Future Action"
+            ]
+        ],
+        "why_q1": "Why do you think a disinfectant wipe is used to disinfect?",
+        "why_q2": "Why will you grab the disinfectant wipe?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that wiping can be done using a towel, a towel can be dirty, and an object being dirty is the opposite of being clean. Therefore, it is possible that the act of wiping an object will make it clean."
+            ],
+            [
+                "causal",
+                "I will wipe the table to fulfill the goal of the table being clean."
+            ],
+            [
+                "history",
+                "I have observed that the act of mopping, vacuuming, and sweeping an object will make it clean."
+            ]
+        ],
+        "video": "videos/clean_towel.mp4",
+        "plan": [
+            [
+                "Wipe the kitchen table with the cleaning rag",
+                "Interrupted Action"
+            ],
+            [
+                "Observe kitchen table clean",
+                "Next Action"
+            ]
+        ],
+        "why_q1": "Why do you think the act of wiping an object will make it clean?",
+        "why_q2": "Why will you wipe the kitchen table with the cleaning rag?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that dusting can be done using a wash cloth, a wash cloth is usually used on a stall, a stall can be mopped, and the act of mopping an object will make it clean. Therefore, it is possible that the act of dusting an object will make it clean."
+            ],
+            [
+                "causal",
+                "I will dust the table to fulfill the goal of the table being clean."
+            ],
+            [
+                "history",
+                "I have observed that the act of sweeping, scrubbing, and disinfecting an object will make it clean."
+            ]
+        ],
+        "video": "videos/clean_featherduster.mp4",
+        "plan": [
+            [
+                "Dust the kitchen table with the feather duster",
+                "Interrupted Action"
+            ],
+            [
+                "Observe kitchen table clean",
+                "Next Action"
+            ]
+        ],
+        "why_q1": "Why do you think the act of dusting an object will make it clean?",
+        "why_q2": "Why will you dust the kitchen table with the feather duster?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that a feather duster can be placed, placing an object is the opposite of picking up an object, a card game can be picked up, and a card game is often in a cabinet. Therefore, it is possible that a feather duster is often in a cabinet."
+            ],
+            [
+                "causal",
+                "I will move from the table to the cabinet to later grab the feather duster from the cabinet."
+            ],
+            [
+                "history",
+                "I have observed that a rubbish bin, a recyclebin, and a laundry basket are often in a cabinet. I have also observed that a feather duster is often in and a box."
+            ]
+        ],
+        "video": "videos/move4.mp4",
+        "plan": [
+            [
+                "Move to the cabinet",
+                "Interrupted Action"
+            ],
+            [
+                "Observe feather duster at cabinet",
+                "Next Action"
+            ],
+            [
+                "Grab the feather duster",
+                "Future Action"
+            ]
+        ],
+        "why_q1": "Why do you think a feather duster is often in a cabinet?",
+        "why_q2": "Why will you move to the cabinet?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that a disinfectant wipe is often in a cabinet, a cabinet often can contain a brush, and a brush is often in a kitchen table. Therefore, it is possible that a disinfectant wipe is often in a kitchen table."
+            ],
+            [
+                "causal",
+                "I will move from the table to the kitchen table to later grab the disinfectant wipe from the kitchen table."
+            ],
+            [
+                "history",
+                "I have observed that a cake, a plate, and a kitchen towel are often in a kitchen table. I have also observed that a disinfectant wipe is often in a bathroom counter, a kitchen counter, and a kitchen table."
+            ]
+        ],
+        "video": "videos/move5.mp4",
+        "plan": [
+            [
+                "Move to the kitchen table",
+                "Interrupted Action"
+            ],
+            [
+                "Observe disinfectant wipe at kitchen table",
+                "Next Action"
+            ],
+            [
+                "Grab the disinfectant wipe",
+                "Future Action"
+            ]
+        ],
+        "why_q1": "Why do you think a disinfectant wipe is often in a kitchen table?",
+        "why_q2": "Why will you move to the kitchen table?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that disinfecting can be done using a bottle of bleach, and a bottle of bleach can be clean. Therefore, it is possible that the act of disinfecting an object will make it clean."
+            ],
+            [
+                "causal",
+                "I will disinfect the table to fulfill the goal of the table being clean."
+            ],
+            [
+                "history",
+                "I have observed that the act of scrubbing, sweeping, and rinsing an object will make it clean."
+            ]
+        ],
+        "video": "videos/clean_duster.mp4",
+        "plan": [
+            [
+                "Disinfect the kitchen table with the disinfectant wipe",
+                "Interrupted Action"
+            ],
+            [
+                "Observe kitchen table clean",
+                "Next Action"
+            ]
+        ],
+        "why_q1": "Why do you think the act of disinfecting an object will make it clean?",
+        "why_q2": "Why will you disinfect the kitchen table with the disinfectant wipe?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that a cleaning rag is often in a cabinet, a cabinet often can contain a towel, and a towel is used to wipe. Therefore, it is possible that a cleaning rag is used to wipe."
+            ],
+            [
+                "causal",
+                "I will take the cleaning rag to later be able to wipe the table with the cleaning rag."
+            ],
+            [
+                "history",
+                "I have observed that a paper towel, a napkin, and a cloth are used to wipe. I have also observed that a cleaning rag is used to dust and sponge."
+            ]
+        ],
+        "video": "videos/grab_towel.mp4",
+        "plan": [
+            [
+                "Grab the cleaning rag",
+                "Interrupted Action"
+            ],
+            [
+                "Move to the kitchen table",
+                "Next Action"
+            ],
+            [
+                "Wipe the kitchen table with the cleaning rag",
+                "Future Action"
+            ]
+        ],
+        "why_q1": "Why do you think a cleaning rag is used to wipe?",
+        "why_q2": "Why will you grab the cleaning rag?"
+    },
+    {
+        "responses": [
+            [
+                "xkge",
+                "I know that sponging can be done using a dish towel, a dish towel is usually used on a wine glass, a wine glass can be scrubbed, and the act of scrubbing an object will make it clean. Therefore, it is possible that the act of sponging an object will make it clean."
+            ],
+            [
+                "causal",
+                "I will sponge the table to fulfill the goal of the table being clean."
+            ],
+            [
+                "history",
+                "I have observed that the act of sweeping, vacuuming, and disinfecting an object will make it clean."
+            ]
+        ],
+        "video": "videos/clean_sponge.mp4",
+        "plan": [
+            [
+                "Sponge the kitchen table with the washing sponge",
+                "Interrupted Action"
+            ],
+            [
+                "Observe kitchen table clean",
+                "Next Action"
+            ]
+        ],
+        "why_q1": "Why do you think the act of sponging an object will make it clean?",
+        "why_q2": "Why will you sponge the kitchen table with the washing sponge?"
+    }
+]
