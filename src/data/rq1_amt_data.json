@@ -230,21 +230,21 @@
         "responses": [
             [
                 "xkge",
-                "I know that a disinfectant wipe is often in a cabinet, a cabinet often can contain a detergent container, and a detergent container is used to disinfect. Therefore, it is possible that a disinfectant wipe is used to disinfect."
+                "I know that a disinfectant brush is often in a cabinet, a cabinet often can contain a detergent container, and a detergent container is used to disinfect. Therefore, it is possible that a disinfectant brush is used to disinfect."
             ],
             [
                 "causal",
-                "I will take the disinfectant wipe to later be able to disinfect the table with the disinfectant wipe."
+                "I will take the disinfectant brush to later be able to disinfect the table with the disinfectant brush."
             ],
             [
                 "history",
-                "I have observed that a bottle of dishwashing liquid, a bottle of bleach, and a detergent container are used to disinfect. I have also observed that a disinfectant wipe is used to and wipe."
+                "I have observed that a bottle of dishwashing liquid, a bottle of bleach, and a detergent container are used to disinfect. I have also observed that a disinfectant brush is used to and wipe."
             ]
         ],
         "video": "videos/grab_duster.mp4",
         "plan": [
             [
-                "Grab the disinfectant wipe",
+                "Grab the disinfectant brush",
                 "Interrupted Action"
             ],
             [
@@ -252,12 +252,12 @@
                 "Next Action"
             ],
             [
-                "Disinfect the kitchen table with the disinfectant wipe",
+                "Disinfect the kitchen table with the disinfectant brush",
                 "Future Action"
             ]
         ],
-        "why_q1": "Why do you think a disinfectant wipe is used to disinfect?",
-        "why_q2": "Why will you grab the disinfectant wipe?"
+        "why_q1": "Why do you think a disinfectant brush is used to disinfect?",
+        "why_q2": "Why will you grab the disinfectant brush?"
     },
     {
         "responses": [
@@ -354,15 +354,15 @@
         "responses": [
             [
                 "xkge",
-                "I know that a disinfectant wipe is often in a cabinet, a cabinet often can contain a brush, and a brush is often in a kitchen table. Therefore, it is possible that a disinfectant wipe is often in a kitchen table."
+                "I know that a disinfectant brush is often in a cabinet, a cabinet often can contain a brush, and a brush is often in a kitchen table. Therefore, it is possible that a disinfectant brush is often in a kitchen table."
             ],
             [
                 "causal",
-                "I will move from the table to the kitchen table to later grab the disinfectant wipe from the kitchen table."
+                "I will move from the table to the kitchen table to later grab the disinfectant brush from the kitchen table."
             ],
             [
                 "history",
-                "I have observed that a cake, a plate, and a kitchen towel are often in a kitchen table. I have also observed that a disinfectant wipe is often in a bathroom counter, a kitchen counter, and a kitchen table."
+                "I have observed that a cake, a plate, and a kitchen towel are often in a kitchen table. I have also observed that a disinfectant brush is often in a bathroom counter, a kitchen counter, and a kitchen table."
             ]
         ],
         "video": "videos/move5.mp4",
@@ -372,15 +372,15 @@
                 "Interrupted Action"
             ],
             [
-                "Observe disinfectant wipe at kitchen table",
+                "Observe disinfectant brush at kitchen table",
                 "Next Action"
             ],
             [
-                "Grab the disinfectant wipe",
+                "Grab the disinfectant brush",
                 "Future Action"
             ]
         ],
-        "why_q1": "Why do you think a disinfectant wipe is often in a kitchen table?",
+        "why_q1": "Why do you think a disinfectant brush is often in a kitchen table?",
         "why_q2": "Why will you move to the kitchen table?"
     },
     {
@@ -401,7 +401,7 @@
         "video": "videos/clean_duster.mp4",
         "plan": [
             [
-                "Disinfect the kitchen table with the disinfectant wipe",
+                "Disinfect the kitchen table with the disinfectant brush",
                 "Interrupted Action"
             ],
             [
@@ -410,7 +410,7 @@
             ]
         ],
         "why_q1": "Why do you think the act of disinfecting an object will make it clean?",
-        "why_q2": "Why will you disinfect the kitchen table with the disinfectant wipe?"
+        "why_q2": "Why will you disinfect the kitchen table with the disinfectant brush?"
     },
     {
         "responses": [
