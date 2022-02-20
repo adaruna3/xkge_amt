@@ -41,7 +41,7 @@ function App() {
     if (studyId === "2") {
       fileName = "/study2_v1/study" + studyId + "_exp" + expId + "_" + userData.turkId  +".json";
     } else {
-      fileName = "/study1_v0/study" + studyId + "_exp" + expId + "_" + userData.turkId  +".json";
+      fileName = "/study1_v1/study" + studyId + "_exp" + expId + "_" + userData.turkId  +".json";
     }
     
     let dbx = new Dropbox({ accessToken: 'qRrgLr4BefkAAAAAAAAAAcNrexQ29MnpdcvChi6P3-dIg9iAOWNR1Jth5-lJFN7Q' });

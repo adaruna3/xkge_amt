@@ -8,11 +8,13 @@ function Rules1({setCurrentPage}) {
                     <div className="card-body">
                         <h5 className="card-title">Stage 1 - Robot Interaction</h5>
                         <p className="card-text">
-                        In each question that follows, the robot will give multiple responses to a <b>"why" question</b> it was asked.<br/><br/>
+                        In each question that follows, the robot will give multiple responses to a <b>"why" question</b> it is asked.<br/><br/>
                         
-                        Your job is to select which of the robot's responses best answer the <b>"why" question</b>.<br/><br/>
+                        Your job is to <b>select which of the robot's responses <i>best</i> answer the "why" question</b>.<br/><br/>
 
-                        For extra context, you will also be shown what the robot was doing in a video and the plan it was following when it was asked the <b>why question</b>.
+                        For extra context, you will also be shown <b>what the robot was doing in a video</b> when it was asked the <b>why question</b>.<br/><br/>
+
+                        Please <b>pay careful attention to the "why" question being asked</b>, as they are different.
                         </p>
                         <br/><hr/>
                         <button 

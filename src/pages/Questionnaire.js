@@ -47,7 +47,7 @@ function Questionnaire({setCurrentPage, saveData}) {
                                 <label className="custom-control-label" for="45-54">45-54</label>
                             </div>
                             <div className="custom-control custom-radio">
-                                <input type="radio" id="55 and older" name="Question 1" className="custom-control-input" onChange={(e) => setQ1(e.target.id)}/>
+                                <input type="radio" id="55+" name="Question 1" className="custom-control-input" onChange={(e) => setQ1(e.target.id)}/>
                                 <label className="custom-control-label" for="55+" >55 and older</label>
                             </div>
                             <div className="custom-control custom-radio">
