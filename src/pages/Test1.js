@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import ReactPlayer from 'react-player'
-import why_qs from '../data/rq1_amt_data.json'
+import why_qs from '../data/user_preferences_amt_explanations.json'
 
 
 
