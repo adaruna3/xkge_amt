@@ -44,7 +44,7 @@ function App() {
       fileName = "/study1_v1/study" + studyId + "_exp" + expId + "_" + userData.turkId  +".json";
     }
     
-    let dbx = new Dropbox({ accessToken: 'qRrgLr4BefkAAAAAAAAAAcNrexQ29MnpdcvChi6P3-dIg9iAOWNR1Jth5-lJFN7Q' });
+    let dbx = new Dropbox({ accessToken: 'PUT YOURS' }); // you will need to update this, no longer validd
     dbx.filesUpload({path: fileName, contents: dataStr})
       .then(function(response) {
         console.log(response)

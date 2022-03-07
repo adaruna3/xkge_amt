@@ -1,24 +1,15 @@
+# AMT User Study Code for [XKGE](https://github.com/adaruna3/explainable-kge)
 
-Important pages to follow the code:
+## Install
 
-1) App.js serves just like a "main" function, where you will see the different pages 'currentPage' is set to and the order in which pages get set. 
-- From the pages for 'currentPage' you can click on the the corresponding pages in the pages folder. For example: Welcome.js, CorrectVids.js, etc
-- Also in App.js, you see the handleFinish() function, this basically how I send all recorded data to dropbox. Please don't do something bad with my access token which is very much visible in this code :) 
-
-2) CorrectVids.js is an example file if you need to reference how to load in videos
-
-3) Explanations.js is an example file for how I loaded in explanations from the data folder based on study condition
-
-4) LearningVideos.js and PostTestVideos.js are very similar. They are examples of how I display questions for the user to answer based on a displayed video or image on the screen. In these files I reference Explanations.js to display the corresponding explanations as well.
-
-5) Questionnare.js is example file for survey style questions 
-
-
-
-To run the code with localhost
-
-1) Install node -  https://nodejs.org/en/ 
-2) Within the project folder, run 'npm install'
-3) Then run 'npm start'
-4) Build 'npm run build'
-5) Publish with firebase 'firebase deploy'
+1) First copy the appropriate explanation files from `explainable-kge` repo to `./src/data/`. The copied explanation files we used are already provided. We've also included needed robot videos for the user preferences study in `./public/videos/`.
+2) Begin hosting the user study server at local host to test it:
+    - Install [node](https://nodejs.org/en/).
+    - Run 'npm install' in the top-level of this repo.
+    - Run 'npm run start' to begin the server at port `3000` on `localhost`.
+    - Inspect the [user study website](http://localhost:3000/).
+3) To host the user study on the web using [Firebase](https://firebase.google.com/):
+    - Install firebase.
+    - Run `npm run build` to build the user study web files.
+    - Run `firebase deploy` to publish the user study to the web.
+4) You will need to make additional changes to make the user study store data to dropbox. See [dropbox dev pages](https://www.dropbox.com/developers/reference)
